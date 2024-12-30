@@ -55,7 +55,7 @@ a.login-link {
     <div class="container-fluid">
       <div
         class="d-flex flex-wrap align-items-center justify-content-between">
-        <img alt="#" src="./images/Logo.png" width="250">
+        <img alt="#" src="/gentlemonster/images/Logo.png" width="250">
 
         <ul class="nav justify-content-center">
           <li><a href="#" class="nav-link px-2 link-body-emphasis">선글라스</a></li>
