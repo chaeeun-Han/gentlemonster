@@ -1,13 +1,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-
-<%
-	List<String> styles = new ArrayList<String>();
-	for (int i = 0; i < 146; i++) {
-		styles.add("https://web-resource.gentlemonster.com/event/1716253628.jpg");
-	}
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +33,7 @@
 	
 	.description_container{
 		margin: 30px;
+		padding-top: 20px;
 	}
 	
 	.title_container{
@@ -103,18 +98,14 @@
 			<p id="description">인스타그램에 @gentlemonster을 태그하여 당신의 스타일을 공유해보세요.</p>
 		</div>
 		<div class="title_container">
-			<p id="title">스타일/All(<%=styles.size()%>)</p>
+			<p id="title">스타일/All(${styles.size()})</p>
 		</div>
-		<div id="images">
-			<%
-				for(String style: styles){
-			%>
-			<button id="image_button" onclick="alert('모달')">
-				<img src="<%=style%>"/>
-			</button>
-			<%
-				}
-			%>
+		<div id="images" style="padding-bottom:70px;">
+			<c:forEach var="style" items="${styles}">
+				<button id="image_button" onclick="alert('모달')">
+					<img src="${style.getImageUrl() }"/>
+				</button>
+			</c:forEach>
 		</div>
 	</div>
 </body>

@@ -22,23 +22,23 @@ public class TestDAO {
 		}
 	}
 	
-	public int test() {
-		int count = 0;
+	public String test() {
+		String str = null;
 		Connection conn = null;
 		
 		try {
 			conn = dataSource.getConnection();
-			String sql = "select count(*) from employees";
+			String sql = "select * from big_category";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			if(rs.next()) {
-				count = rs.getInt(1);
+				str = rs.getString(2);
 			}
 			conn.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return count;
+		return str;
 	}
 }
