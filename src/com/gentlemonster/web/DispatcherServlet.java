@@ -1,9 +1,12 @@
 package com.gentlemonster.web;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -21,33 +24,26 @@ public class DispatcherServlet extends HttpServlet {
 	private Map<String, CommandHandler> commandHandlerMap = new HashMap<>();
 	
 	public void init() throws ServletException{
-		String configFile = getInitParameter("configFile");
-		Properties prop = new Properties();
+		String basePackage = getInitParameter("basePackage");
 		
-		String configFilePath = getServletContext().getRealPath(configFile);
-		try (FileReader inStream = new FileReader(configFilePath)){
-			prop.load(inStream);
-		}catch(IOException e) {
-			throw new ServletException(e);
-		}
-		
-		Iterator<?> keys = prop.keySet().iterator();
-		while(keys.hasNext()) {
-			String command = (String)keys.next();
-			String handlerClassName = prop.getProperty(command);
-			try {
-				Class<?> handlerClass = Class.forName(handlerClassName);
-				CommandHandler handlerInstance = 
-						(CommandHandler)handlerClass.getDeclaredConstructor().newInstance();
-				commandHandlerMap.put(command, handlerInstance);
-			}catch(Exception e) {
-				throw new ServletException(e);
-			}
-			
-		}
+        try {
+            Class<?>[] handlerClasses = getClasses(basePackage);
+            for (Class<?> handlerClass : handlerClasses) {
+                // 클래스에 @RequestMapping 어노테이션 있는지 확인
+                if (handlerClass.isAnnotationPresent(RequestMapping.class)) {
+                    RequestMapping annotation = handlerClass.getAnnotation(RequestMapping.class);
+                    String command = annotation.value();  // 어노테이션에서 URL 가져옴
+
+                    // 핸들러 객체 생성
+                    CommandHandler handlerInstance = (CommandHandler) handlerClass.getDeclaredConstructor().newInstance();
+                    commandHandlerMap.put(command, handlerInstance);
+                }
+            }
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
 	}
 
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processServlet(request, response);
 	}
@@ -89,6 +85,24 @@ public class DispatcherServlet extends HttpServlet {
 		
 		RequestDispatcher disp = request.getRequestDispatcher(viewPage);
 		disp.forward(request, response);
+	}
+
+    // 패키지 경로에 있는 모든 파일 가져옴
+	private Class<?>[] getClasses(String basePackage) throws ClassNotFoundException {
+        String path = getClass().getClassLoader().getResource(basePackage.replace('.', '/')).getFile();
+        File dir = new File(path);
+        File[] files = dir.listFiles((dir1, name) -> name.endsWith(".class"));
+        if (files == null) {
+            return new Class<?>[0];
+        }
+
+        List<Class<?>> classes = new ArrayList<>();
+        for (File file : files) {
+            String className = basePackage + '.' + file.getName().replace(".class", "");
+            classes.add(Class.forName(className));
+        }
+
+        return classes.toArray(new Class<?>[0]);
 	}
 }
 
