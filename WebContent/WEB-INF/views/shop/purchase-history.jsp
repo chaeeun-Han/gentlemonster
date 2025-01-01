@@ -5,66 +5,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%!
-	int totalPrice;
-	int shippingFee;
-	Long id = 123L;
-	LocalDate date = LocalDate.now();
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	 String formatedNow = date.format(formatter);
-
-	public class PurchaseDto {
-		private String name;
-		private int price;
-		private int count;
-		private String url;
-		
-		public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getPrice() {
-            return price;
-        }
-
-        public void setPrice(int price) {
-            this.price = price;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-	}
-%>
-<%
-	List<PurchaseDto> purchases = new ArrayList<PurchaseDto>();
-	
-	for (int i = 0; i < 2; i++) {
-		PurchaseDto dto = new PurchaseDto();
-		dto.setName("다다 01");
-		dto.setPrice(340000);
-		dto.setCount(1);
-		dto.setUrl("https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_OJO_GC9_2.jpg");
-		purchases.add(dto);
-		totalPrice += dto.getPrice();
-	}
-%>
 <!DOCTYPE html>
 <html>
 <head>
