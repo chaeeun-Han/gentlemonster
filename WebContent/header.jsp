@@ -60,7 +60,7 @@ a.login-link {
         <ul class="nav justify-content-center">
           <li><a href="#" class="nav-link px-2 link-body-emphasis">선글라스</a></li>
           <li><a href="#" class="nav-link px-2 link-body-emphasis">안경</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">스타일</a></li>
+          <li><a href="/styles" class="nav-link px-2 link-body-emphasis">스타일</a></li>
         </ul>
 
         <div class="d-flex align-items-center">
