@@ -1,0 +1,59 @@
+@charset "UTF-8";
+.custom-text {
+    font-size: 11px; /* 글씨 크기 조정 */
+    font-weight: 500;
+    color: #343434 !important;
+}
+
+.col-custom {
+    flex: 0 0 20%; /* 20%로 설정하여 한 줄에 5개가 보이도록 */
+    max-width: 20%;
+}
+
+.hv img {
+    border: 1px solid transparent; 
+    margin: 2px;
+    transition: transform 0.3s ease, border 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.hv:hover img {
+    border: 1px solid black; 
+    padding: 3px; 
+    background-color: white;
+}
+
+.hv:focus img,
+.hv:active img {
+    border: 1px solid black;
+    padding: 3px;
+    background-color: white;
+    outline: none; /* 브라우저 기본 포커스 제거 */
+}
+
+@media ( max-width : 1200px) {
+    .col-custom {
+        flex: 0 0 25%; /* 화면 크기가 작을 경우 한 줄에 4개 */
+        max-width: 25%;
+    }
+}
+
+@media ( max-width : 992px) {
+    .col-custom {
+        flex: 0 0 33.33%; /* 화면 크기가 더 작을 경우 한 줄에 3개 */
+        max-width: 33.33%;
+    }
+}
+
+@media ( max-width : 768px) {
+    .col-custom {
+        flex: 0 0 50%; /* 화면이 더 작을 경우 한 줄에 2개 */
+        max-width: 50%;
+    }
+}
+
+@media ( max-width : 576px) {
+    .col-custom {
+        flex: 0 0 100%; /* 화면이 매우 작을 경우 한 줄에 1개 */
+        max-width: 100%;
+    }
+}
