@@ -28,7 +28,7 @@ public class PurchaseHistoryHandler implements CommandHandler{
 		int shippingFee = 0;
 		int totalCount = 0;
 		PurchaseInformationDTO information = purchaseHistoryDAO.getPurchaseInformation(purchaseId);
-		String purchaseTime = information.getPurchaseTime();
+
 		for (PurchaseHistoryDTO product : products) {
 			totalProductPrice += product.getPrice();
 			totalCount += product.getProductCount();
@@ -40,9 +40,9 @@ public class PurchaseHistoryHandler implements CommandHandler{
 		request.setAttribute("shippingFee", shippingFee);
 		request.setAttribute("totalPrice", totalPrice);
 		request.setAttribute("purchaseId", purchaseId);
-		request.setAttribute("purchaseTime", purchaseTime);
 		request.setAttribute("totalCount", totalCount);
+		request.setAttribute("information", information);
 		
-		return "/shop/purchase-history.jsp";
+		return "/shop/purchaseHistory.jsp";
 	}
 }
