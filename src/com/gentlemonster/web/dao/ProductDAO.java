@@ -110,7 +110,7 @@ public class ProductDAO {
 				product.setSmallCategoryName(smallCategoryName);
 				product.setTotalCount(rs.getInt("totalCount"));
 				product.setImageUrl(rs.getString("imageUrl"));
-				product.setName(rs.getString("name"));
+				product.setProductName(rs.getString("name"));
 
 				// 가격 처리
 				int price = rs.getInt("price");
