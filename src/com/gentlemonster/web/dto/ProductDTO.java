@@ -12,9 +12,12 @@ public class ProductDTO {
 	private String smallCategoryName;
 	private String bigCategoryName;
 	private String imageUrl;
-    private String name;
+    private String productName;
     private String price;
     private Integer colorCount;
+    private Integer productCount;
+    private String discription;
+    private String detail;
     private Integer hit;
 
     private Integer totalCount; // select된 상품 갯수

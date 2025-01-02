@@ -11,8 +11,8 @@
 	rel="stylesheet">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-<link rel="stylesheet" type="text/css" href="/gentlemonster/css/productList.css">
-<script src="/gentlemonster/js/productList.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/productList.css">
+<script src="/js/productList.js"></script>
 </head>
 <body>
 	<jsp:include page="/header.jsp"></jsp:include>
@@ -21,59 +21,59 @@
 			<ul class="nav justify-content-center">
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=view-all" id="item-view-all"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=view-all" id="item-view-all"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/1-glasses-viewall.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">전체보기</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=1" id="item-1"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=11" id="item-11"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/Optical-Thumbnail.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">2024
 							옵티컬</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=2" id="item-2"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=12" id="item-12"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/3-glasses-best.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">베스트셀러</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=3" id="item-3"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=13" id="item-13"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/7-glasses-tinted.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">틴트 렌즈</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=4" id="item-4"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=14" id="item-14"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/5-glasses-bluelight.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">블루라이트 차단</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=5" id="item-5"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=15" id="item-15"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/4-glasses-metal.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">메탈
 							렌즈</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=6" id="item-6"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=16" id="item-16"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/6-glasses-gift.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">선물추천
 							프레임</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=7" id="item-7"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=17" id="item-17"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/8-glasses-square.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">사각 프레임
 							프레임</span>
 				</a></li>
 				<li class="m-3 hv"><a
 					class="d-flex flex-column align-items-center text-center text-decoration-none text-reset"
-					href="/gentlemonster/shop?bigCategoryId=2&smallCategoryId=8" id="item-8"> <img class="rounded-circle" alt="#"
+					href="/shop?bigCategoryId=2&smallCategoryId=18" id="item-18"> <img class="rounded-circle" alt="#"
 						src="https://www-prd-kr.gentlemonster.com/media/catalog/category/9-glasses-round.jpg"
 						width="80px" height="80px"> <span class="mt-2 custom-text">원형
 							프레임</span>
@@ -89,7 +89,7 @@
 				<c:forEach var="product" items="${productList}">
 					<div class="col-custom mb-4">
 						<div class="card">
-							<a class="text-decoration-none text-reset" href="/gentlemonster/shop/item?id=${product.productId}">
+							<a class="text-decoration-none text-reset" href="/shop/item?id=${product.productId}">
 								<!-- 이미지 -->
 								<img src="${product.imageUrl}" class="card-img-top"
 									alt="${product.name}">
