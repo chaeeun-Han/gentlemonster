@@ -43,7 +43,7 @@ public class ProductDAO {
 			// smallCategory가 "view-all"일 때, bigCategory만으로 조회
 			if ("view-all".equals(smallCategoryId)) {
 				stmt = conn.prepareStatement(
-						"SELECT MIN(product_id) AS productId, product_name AS name, price, " +
+						"SELECT MIN(product_id) AS productId, product_name AS productName, price, " +
 								"color_count AS colorCount, hit, main_image AS imageUrl, " +
 								"COUNT(*) OVER() AS totalCount " +
 								"FROM product " +
@@ -68,7 +68,7 @@ public class ProductDAO {
 
 			} else { // smallCategory와 bigCategory로 조회
 				stmt = conn.prepareStatement(
-					    "SELECT product_id AS productId, product_name AS name, price, " +
+					    "SELECT product_id AS productId, product_name AS productName, price, " +
 					    "color_count AS colorCount, hit, main_image AS imageUrl, " +
 					    "COUNT(*) OVER() AS totalCount " +
 					    "FROM product " +
@@ -106,7 +106,7 @@ public class ProductDAO {
 				product.setSmallCategoryName(smallCategoryName);
 				product.setTotalCount(rs.getInt("totalCount"));
 				product.setImageUrl(rs.getString("imageUrl"));
-				product.setProductName(rs.getString("name"));
+				product.setProductName(rs.getString("productName"));
 
 				// 가격 처리
 				int price = rs.getInt("price");

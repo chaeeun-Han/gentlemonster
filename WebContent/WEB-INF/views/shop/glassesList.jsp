@@ -92,10 +92,10 @@
 							<a class="text-decoration-none text-reset" href="/shop/item?id=${product.productId}">
 								<!-- 이미지 -->
 								<img src="${product.imageUrl}" class="card-img-top"
-									alt="${product.name}">
+									alt="${product.productName}">
 								<div class="card-body text-center">
 									<!-- 상품명 -->
-									<h5 class="card-title">${product.name}</h5>
+									<h5 class="card-title">${product.productName}</h5>
 									<!-- 가격 -->
 									<p class="card-text">${product.price}</p>
 									<!-- 컬러 옵션 -->
