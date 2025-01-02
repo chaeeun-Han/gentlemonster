@@ -41,8 +41,7 @@ public class CartFilter implements Filter {
         HttpSession session = httpRequest.getSession();
 
         try {
-            // String userId = (String) session.getAttribute("userid"); // 세션에서 사용자 ID 가져오기
-            String userId = "1";
+            String userId = (String) session.getAttribute("userid"); // 세션에서 사용자 ID 가져오기
             int cartCount = 0;
 
             if (userId != null) {
