@@ -21,7 +21,6 @@ public class ProductDAO {
 	static DataSource dataSource;
 
 	static {
-		// MemberDAO 객체가 로드 될 때, dataSource 객체도 로드 되도록
 		try {
 			Context context = new InitialContext();
 			dataSource = (DataSource)context.lookup("java:comp/env/jdbc/Oracle");
@@ -44,20 +43,20 @@ public class ProductDAO {
 			// smallCategory가 "view-all"일 때, bigCategory만으로 조회
 			if ("view-all".equals(smallCategoryId)) {
 				stmt = conn.prepareStatement(
-						"SELECT MIN(p.product_id) AS productId, p.product_name AS name, p.price AS price, " +
-								"p.color_count AS colorCount, p.hit AS hit, i.image_url AS imageUrl, " +
+						"SELECT MIN(product_id) AS productId, product_name AS name, price, " +
+								"color_count AS colorCount, hit, main_image AS imageUrl, " +
 								"COUNT(*) OVER() AS totalCount " +
-								"FROM product p " +
-								"LEFT JOIN image i ON p.product_id = i.product_id " +
-						"WHERE p.big_category_id = ?" +
-						"GROUP BY P.product_name, P.price, p.color_count, p.hit, i.image_url");
+								"FROM product " +
+						"WHERE big_category_id = ? " +
+						"GROUP BY product_name, price, color_count, hit, main_image " +
+						"ORDER BY MIN(product_id) ASC");
 				stmt.setString(1, bigCategoryId);
 
 				// 카테고리명 가져오기
 				String getCategoriesSql = 
-						"SELECT bc.big_category_name AS big_category " +
-						"FROM big_category bc " +
-						"WHERE bc.big_category_id = ?";
+						"SELECT big_category_name AS big_category " +
+						"FROM big_category " +
+						"WHERE big_category_id = ?";
 				PreparedStatement getCategories = conn.prepareStatement(getCategoriesSql);
 				getCategories.setString(1, bigCategoryId);
 				ResultSet categories = getCategories.executeQuery();
@@ -69,20 +68,17 @@ public class ProductDAO {
 
 			} else { // smallCategory와 bigCategory로 조회
 				stmt = conn.prepareStatement(
-					    "SELECT p.product_id AS productId, p.product_name AS name, p.price AS price, " +
-					    "p.color_count AS colorCount, p.hit AS hit, " +
-					    "(SELECT i.image_url " +
-					    " FROM image i " +
-					    " WHERE i.product_id = p.product_id AND ROWNUM = 1) AS imageUrl, " +
+					    "SELECT product_id AS productId, product_name AS name, price, " +
+					    "color_count AS colorCount, hit, main_image AS imageUrl, " +
 					    "COUNT(*) OVER() AS totalCount " +
-					    "FROM product p " +
-					    "WHERE p.small_category_id = ? AND p.big_category_id = ?");
-
-				
+					    "FROM product " +
+					    "WHERE small_category_id = ? AND big_category_id = ? " +
+					    "ORDER BY product_id ASC");
 				stmt.setString(1, smallCategoryId);
 				stmt.setString(2, bigCategoryId);
 
 				// 카테고리명 가져오기
+				System.out.println("small: " + smallCategoryId +",big: " + bigCategoryId);
 				String getCategoriesSql = 
 						"SELECT sc.small_category_name AS small_category, " +
 								"bc.big_category_name AS big_category " +
@@ -93,11 +89,11 @@ public class ProductDAO {
 				getCategories.setString(1, smallCategoryId);
 				getCategories.setString(2, bigCategoryId);
 				ResultSet categories = getCategories.executeQuery();
-
+				
 				if (categories.next()) {
 					bigCategoryName = categories.getString("big_category");
 					smallCategoryName = categories.getString("small_category");
-				}
+				} 
 			}
 
 			rs = stmt.executeQuery();

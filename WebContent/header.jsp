@@ -58,8 +58,8 @@ a.login-link {
         <img alt="#" src="/images/Logo.png" width="250">
 
         <ul class="nav justify-content-center">
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">선글라스</a></li>
-          <li><a href="#" class="nav-link px-2 link-body-emphasis">안경</a></li>
+          <li><a href="/shop?bigCategoryId=1&smallCategoryId=view-all" class="nav-link px-2 link-body-emphasis">선글라스</a></li>
+          <li><a href="/shop?bigCategoryId=2&smallCategoryId=view-all" class="nav-link px-2 link-body-emphasis">안경</a></li>
           <li><a href="/styles" class="nav-link px-2 link-body-emphasis">스타일</a></li>
         </ul>
 
@@ -75,7 +75,7 @@ a.login-link {
             <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
           </svg>
           <!-- 장바구니 배지 -->
-          <span class='badge' id='lblCartCount'> 0 </span>
+          <span class='badge' id='lblCartCount'> ${cart_count} </span>
         </div>
       </div>
     </div>
