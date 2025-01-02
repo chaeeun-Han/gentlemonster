@@ -28,32 +28,6 @@ public class ProductDAO {
 			e.printStackTrace();
 		}
 	}
-	
-	public ProductDTO getItem(Long productId) {
-		ProductDTO item = new ProductDTO();
-
-		try {
-			Connection conn = dataSource.getConnection();
-			PreparedStatement stmt;
-			stmt = conn.prepareStatement(
-					"SELECT p.product_name AS name, p.price AS price, i.image_url AS imageUrl " +
-							"FROM product p " +
-							"LEFT JOIN image i ON p.product_id = i.product_id " +
-					"WHERE p.product_id = ?");
-			stmt.setLong(1, productId);
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
-				item.setName(rs.getString("name"));
-				item.setPrice(rs.getString("price"));
-				item.setImageUrl(rs.getString("imageUrl"));
-			} else {
-				throw new RuntimeException("상품이 없습니다.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return item;
-	}
 
 	public List<ProductDTO> getItemList(String bigCategoryId, String smallCategoryId) {
 		DecimalFormat formatter = new DecimalFormat("###,###");
