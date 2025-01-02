@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 
 import com.gentlemonster.web.dto.ProductDTO;
 
-import lombok.Data;
 
 
 public class ProductDAO {
@@ -30,7 +29,7 @@ public class ProductDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public ProductDTO getItem(Long productId) {
 		ProductDTO item = new ProductDTO();
 
@@ -71,19 +70,20 @@ public class ProductDAO {
 			// smallCategory가 "view-all"일 때, bigCategory만으로 조회
 			if ("view-all".equals(smallCategoryId)) {
 				stmt = conn.prepareStatement(
-						"SELECT p.product_id AS productId, p.product_name AS name, p.price AS price, " +
+						"SELECT MIN(p.product_id) AS productId, p.product_name AS name, p.price AS price, " +
 								"p.color_count AS colorCount, p.hit AS hit, i.image_url AS imageUrl, " +
 								"COUNT(*) OVER() AS totalCount " +
 								"FROM product p " +
 								"LEFT JOIN image i ON p.product_id = i.product_id " +
-						"WHERE p.big_category_id = ?");
+						"WHERE p.big_category_id = ?" +
+						"GROUP BY P.product_name, P.price, p.color_count, p.hit, i.image_url");
 				stmt.setString(1, bigCategoryId);
 
 				// 카테고리명 가져오기
 				String getCategoriesSql = 
 						"SELECT bc.big_category_name AS big_category " +
-								"FROM big_category bc " +
-								"WHERE bc.big_category_id = ?";
+						"FROM big_category bc " +
+						"WHERE bc.big_category_id = ?";
 				PreparedStatement getCategories = conn.prepareStatement(getCategoriesSql);
 				getCategories.setString(1, bigCategoryId);
 				ResultSet categories = getCategories.executeQuery();
@@ -95,12 +95,16 @@ public class ProductDAO {
 
 			} else { // smallCategory와 bigCategory로 조회
 				stmt = conn.prepareStatement(
-						"SELECT p.product_id AS productId, p.product_name AS name, p.price AS price, " +
-								"p.color_count AS colorCount, p.hit AS hit, i.image_url AS imageUrl, " +
-								"COUNT(*) OVER() AS totalCount " +
-								"FROM product p " +
-								"LEFT JOIN image i ON p.product_id = i.product_id " +
-						"WHERE p.small_category_id = ? AND p.big_category_id = ?");
+					    "SELECT p.product_id AS productId, p.product_name AS name, p.price AS price, " +
+					    "p.color_count AS colorCount, p.hit AS hit, " +
+					    "(SELECT i.image_url " +
+					    " FROM image i " +
+					    " WHERE i.product_id = p.product_id AND ROWNUM = 1) AS imageUrl, " +
+					    "COUNT(*) OVER() AS totalCount " +
+					    "FROM product p " +
+					    "WHERE p.small_category_id = ? AND p.big_category_id = ?");
+
+				
 				stmt.setString(1, smallCategoryId);
 				stmt.setString(2, bigCategoryId);
 
@@ -146,7 +150,7 @@ public class ProductDAO {
 				product.setHit(rs.getInt("hit"));
 				products.add(product);
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
