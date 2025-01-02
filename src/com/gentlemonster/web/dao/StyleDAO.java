@@ -26,6 +26,34 @@ public class StyleDAO {
 		}
 	}
 	
+	public StyleDTO getStyle(String productId) {
+	    StyleDTO style = null;
+	    Connection con = null;
+
+	    try {
+	        con = dataSource.getConnection();
+	        String sql = "SELECT product_id, image_url, instagram_id FROM looks_list WHERE product_id = ?";
+	        PreparedStatement stmt = con.prepareStatement(sql);
+	        stmt.setString(1, productId);
+
+	        ResultSet rs = stmt.executeQuery();
+
+	        if (rs.next()) {
+	        	style = new StyleDTO();
+	        	style.setProductId(rs.getLong("product_id"));
+	        	style.setImageUrl(rs.getString("image_url"));
+	        	style.setInstagramId(rs.getString("instagram_id"));
+	        }
+	    } catch(SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        closeConnection(con);
+	    }
+
+	    return style;
+	}
+
+	
 	public List<StyleDTO> getStyleList() {
 		List<StyleDTO> styles = new ArrayList<StyleDTO>();
 		Connection con = null;
