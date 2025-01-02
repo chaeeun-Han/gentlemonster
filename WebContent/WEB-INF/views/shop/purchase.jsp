@@ -52,6 +52,11 @@ hr {
 	border: 1px solid black;
 }
 
+.buttons {
+	display: flex;
+	justify-content: space-between;
+}
+
 .exit {
 	cursor: pointer;
 	background-color: white;
@@ -69,7 +74,6 @@ hr {
 	border: 0px;
 	width: 46%;
 	height: 40px;
-	margin-left: 30px;
 }
 </style>
 </head>
@@ -77,26 +81,33 @@ hr {
 	<div class="container">
 		<div class="delivery-info">
 			<p class="title">배송 정보</p>
-			<form action="" method="post">
+			<form action="/purchase" method="post">
 				<div class="option">
 					<p class="option-title">성</p>
-					<input class="option-input" type="text" name="first" placeholder="성을 적어 주세요.">
+					<input class="option-input" type="text" name="first"
+						placeholder="성을 적어 주세요.">
 				</div>
 				<div class="option">
 					<p class="option-title">이름</p>
-					<input class="option-input" type="text" name="last" placeholder="이름을 적어 주세요.">
+					<input class="option-input" type="text" name="last"
+						placeholder="이름을 적어 주세요.">
 				</div>
 				<div class="option">
 					<p class="option-title">전화번호</p>
-					<input class="option-input" type="text" name="phone" placeholder="전화번호를 적어 주세요.">
+					<input class="option-input" type="text" name="phone"
+						placeholder="전화번호를 적어 주세요.">
 				</div>
 				<div class="option">
 					<p class="option-title">주소</p>
-					<input class="option-input" type="text" name="address" placeholder="도착지의 주소를 적어 주세요.">
+					<input class="option-input" type="text" name="address"
+						placeholder="배송지의 주소를 적어 주세요.">
 				</div>
 				<hr>
-				<button class="exit">취소</button>
-				<button class="purchase">결제하기</button>
+				<div class="buttons">
+					<button type="button" class="exit"
+						onclick="window.location.href='/styles'">취소</button>
+					<button type="submit" class="purchase">결제하기</button>
+				</div>
 			</form>
 		</div>
 		<div class="order-info">
@@ -105,8 +116,9 @@ hr {
 		</div>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 		
 	</script>
+
 </body>
 </html>
