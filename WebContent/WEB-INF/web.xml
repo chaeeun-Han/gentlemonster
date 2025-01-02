@@ -16,5 +16,6 @@
   	<servlet-name>DispatcherServlet</servlet-name>
   	<url-pattern>/shop/*</url-pattern>
   	<url-pattern>/styles/*</url-pattern>
+  	<url-pattern>/login</url-pattern>
   </servlet-mapping>
 </web-app>
