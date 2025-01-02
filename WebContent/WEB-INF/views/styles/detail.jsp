@@ -112,9 +112,9 @@ p {
 </head>
 <body>
 	<div class="modal-left">
-		<p class="instargram-id">@${param.instagramId}</p>
+		<p class="instargram-id">@${instagramId}</p>
 		<img class="style-image" alt="스타일 이미지 URL"
-			src="${param.imageUrl}">
+			src="${imageUrl}">
 	</div>
 	<div class="modal-right">
 		<button class="close">
@@ -122,10 +122,10 @@ p {
 		</button>
 		<button class="item-detail">
 			<img class="item-image" alt="상품 이미지 URL"
-				src="${style.imageUrl}">
+				src="">
 		</button>
-		<p class="item-name">${style.name}</p>
-		<p class="item-price">${style.price}</p>
+		<p class="item-name">${productId}</p>
+		<p class="item-price">상품 가격</p>
 		<button class="buy">구매하기</button>
 	</div>
 </body>

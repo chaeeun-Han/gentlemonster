@@ -139,9 +139,9 @@
 
 	<script>
 		// 모달 열기
-		function openModal() {
+		function openModal(productId, imageUrl, instagramId) {
 			const iframe = document.querySelector("#modal-iframe");
-			iframe.src = "/styles/detail.jsp";
+			iframe.src = "/gentlemonster/styles?id={productId}";
 			document.querySelector("#style-modal").style.visibility = "visible";
 		}
 
