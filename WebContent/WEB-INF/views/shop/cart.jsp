@@ -78,22 +78,22 @@ p {
 }
 
 .item-list::-webkit-scrollbar {
-    width: 5px;
+	width: 5px;
 }
 
 .item-list::-webkit-scrollbar-track {
-    background: #f9f9f9;
-    border-radius: 10px;
+	background: #f9f9f9;
+	border-radius: 10px;
 }
 
 .item-list::-webkit-scrollbar-thumb {
-    background: #f1f1f1;
-    border-radius: 10px;
+	background: #f1f1f1;
+	border-radius: 10px;
 }
 
 .item-list::-webkit-scrollbar-thumb:hover {
-    background: #c7c7c7;
-    cursor: pointer;
+	background: #c7c7c7;
+	cursor: pointer;
 }
 
 .item {
@@ -233,87 +233,7 @@ p {
 							<button class="item-delete">삭제</button>
 						</div>
 					</div>
-<div class="item">
-						<button class="item-detail">
-							<img class="item-image" alt="장바구니 상품 이미지 URL"
-								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
-						</button>
-						<div class="item-info">
-							<p class="item-name">상품명</p>
-							<p class="item-price">가격</p>
-							<div class="item-quantity">
-								<button class="decrease">-</button>
-								<span class="quantity">1</span>
-								<button class="increase">+</button>
-							</div>
-							<button class="item-delete">삭제</button>
-						</div>
-					</div>
-					<div class="item">
-						<button class="item-detail">
-							<img class="item-image" alt="장바구니 상품 이미지 URL"
-								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
-						</button>
-						<div class="item-info">
-							<p class="item-name">상품명</p>
-							<p class="item-price">가격</p>
-							<div class="item-quantity">
-								<button class="decrease">-</button>
-								<span class="quantity">1</span>
-								<button class="increase">+</button>
-							</div>
-							<button class="item-delete">삭제</button>
-						</div>
-					</div>
-					<div class="item">
-						<button class="item-detail">
-							<img class="item-image" alt="장바구니 상품 이미지 URL"
-								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
-						</button>
-						<div class="item-info">
-							<p class="item-name">상품명</p>
-							<p class="item-price">가격</p>
-							<div class="item-quantity">
-								<button class="decrease">-</button>
-								<span class="quantity">1</span>
-								<button class="increase">+</button>
-							</div>
-							<button class="item-delete">삭제</button>
-						</div>
-					</div>
-					<div class="item">
-						<button class="item-detail">
-							<img class="item-image" alt="장바구니 상품 이미지 URL"
-								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
-						</button>
-						<div class="item-info">
-							<p class="item-name">상품명</p>
-							<p class="item-price">가격</p>
-							<div class="item-quantity">
-								<button class="decrease">-</button>
-								<span class="quantity">1</span>
-								<button class="increase">+</button>
-							</div>
-							<button class="item-delete">삭제</button>
-						</div>
-					</div>
-					<div class="item">
-						<button class="item-detail">
-							<img class="item-image" alt="장바구니 상품 이미지 URL"
-								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
-						</button>
-						<div class="item-info">
-							<p class="item-name">상품명</p>
-							<p class="item-price">가격</p>
-							<div class="item-quantity">
-								<button class="decrease">-</button>
-								<span class="quantity">1</span>
-								<button class="increase">+</button>
-							</div>
-							<button class="item-delete">삭제</button>
-						</div>
-					</div>
-					
+
 				</div>
 			</div>
 			<div class="modal-bottom">

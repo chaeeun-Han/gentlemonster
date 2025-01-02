@@ -33,6 +33,7 @@ p {
 	height: 430px;
 	border: none;
 	display: flex;
+	margin: auto;
 }
 
 .modal-left {
@@ -57,7 +58,7 @@ p {
 	flex-direction: column;
 	align-items: center;
 	width: 50%;
-	height: 100%;
+	height: 430px;
 	position: relative;
 }
 
@@ -111,22 +112,22 @@ p {
 </style>
 </head>
 <body>
-	<div class="modal-left">
-		<p class="instargram-id">@${instagramId}</p>
-		<img class="style-image" alt="스타일 이미지 URL"
-			src="${imageUrl}">
-	</div>
-	<div class="modal-right">
-		<button class="close">
-			<i class="fa-solid fa-xmark"></i>
-		</button>
-		<button class="item-detail">
-			<img class="item-image" alt="상품 이미지 URL"
-				src="">
-		</button>
-		<p class="item-name">${productId}</p>
-		<p class="item-price">상품 가격</p>
-		<button class="buy">구매하기</button>
+	<div class="modal-content">
+		<div class="modal-left">
+			<p class="instargram-id">${style.instagramId}</p>
+			<img class="style-image" alt="스타일 이미지 URL" src="${style.imageUrl}">
+		</div>
+		<div class="modal-right">
+			<button class="close">
+				<i class="fa-solid fa-xmark"></i>
+			</button>
+			<button class="item-detail">
+				<img class="item-image" alt="상품 이미지 URL" src="">
+			</button>
+			<p class="item-name">${productId}</p>
+			<p class="item-price">상품 가격</p>
+			<button class="buy">구매하기</button>
+		</div>
 	</div>
 </body>
 </html>

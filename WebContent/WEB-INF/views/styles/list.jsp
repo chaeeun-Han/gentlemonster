@@ -106,7 +106,7 @@
 	background-color: #fff;
 	padding: 15px;
 	width: 630px;
-	height: 430px;
+	height: 550px;
 	border: none;
 	display: flex;
 }
@@ -141,7 +141,7 @@
 		// 모달 열기
 		function openModal(productId, imageUrl, instagramId) {
 			const iframe = document.querySelector("#modal-iframe");
-			iframe.src = "/gentlemonster/styles?id={productId}";
+			iframe.src = "/styles/detail?id=" + encodeURIComponent(productId);
 			document.querySelector("#style-modal").style.visibility = "visible";
 		}
 
