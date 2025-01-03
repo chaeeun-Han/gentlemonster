@@ -11,4 +11,9 @@ public class ImageDTO {
 	private Long imageId;
 	private Long productId;
 	private String imageUrl;
+	
+	public ImageDTO(Long productId, String imageUrl){
+		this.productId = productId;
+		this.imageUrl = imageUrl;
+	}
 }
