@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,6 +54,14 @@ hr {
 	border: 1px solid black;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 10px; /* 버튼 간 간격 */
+    margin-top: 20px; /* 버튼 상단 여백 */
+}
+
 .exit {
 	cursor: pointer;
 	background-color: white;
@@ -78,25 +88,34 @@ hr {
 		<div class="delivery-info">
 			<p class="title">배송 정보</p>
 			<form action="" method="post">
+				<c:forEach var="product" items="${products}">
+				    <input type="hidden" name="productId" value="${product.productId}">
+				    <input type="hidden" name="productName" value="${product.productName}">
+				    <input type="hidden" name="productCount" value="${product.productCount}">
+				    <input type="hidden" name="price" value="${product.price}">
+				    <input type="hidden" name="imgUrl" value="${product.imgUrl}">
+				</c:forEach>
 				<div class="option">
 					<p class="option-title">성</p>
-					<input class="option-input" type="text" name="first" placeholder="성을 적어 주세요.">
+					<input class="option-input" type="text" name="first" placeholder="성을 적어 주세요." required="required" ">
 				</div>
 				<div class="option">
 					<p class="option-title">이름</p>
-					<input class="option-input" type="text" name="last" placeholder="이름을 적어 주세요.">
+					<input class="option-input" type="text" name="last" placeholder="이름을 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">전화번호</p>
-					<input class="option-input" type="text" name="phone" placeholder="전화번호를 적어 주세요.">
+					<input class="option-input" type="text" name="phone" placeholder="전화번호를 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">주소</p>
-					<input class="option-input" type="text" name="address" placeholder="도착지의 주소를 적어 주세요.">
+					<input class="option-input" type="text" name="address" placeholder="도착지의 주소를 적어 주세요." value="${address}" required="required">
 				</div>
 				<hr>
-				<button class="exit">취소</button>
-				<button class="purchase">결제하기</button>
+				<div class="button-container">
+				    <button type="button" class="exit" onclick="history.back();">취소</button>
+				    <button type="submit" class="purchase">결제하기</button>
+				</div>
 			</form>
 		</div>
 		<div class="order-info">
