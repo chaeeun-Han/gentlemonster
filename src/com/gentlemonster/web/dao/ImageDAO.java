@@ -35,7 +35,7 @@ public class ImageDAO {
 
         try {
             con = dataSource.getConnection();
-            String sql = "select product_name, price, color_count, product_count, description, detail "
+            String sql = "select product_name, price, color_count, product_count, description, main_image, detail "
                 + "from product " + "where product_id = ?";
             PreparedStatement pstmt = con.prepareStatement(sql);
             pstmt.setString(1, productId);
@@ -48,8 +48,9 @@ public class ImageDAO {
                 productDTO.setColorCount(rs.getInt(3));
                 productDTO.setProductCount(rs.getInt(4));
                 productDTO.setDiscription(rs.getString(5));
+                productDTO.setMainImage(rs.getString(6));
                 String detail = "- ";
-                detail += rs.getString(6);
+                detail += rs.getString(7);
                 detail = detail.replace("#", "<br />- ");
 
                 productDTO.setDetail(detail);
