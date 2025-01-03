@@ -1,3 +1,4 @@
+<%@page import="com.gentlemonster.web.dto.ProductDTO"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -107,6 +108,10 @@
 </head>
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="com.gentlemonster.web.dto.*" %>
+
 <div class="product-container">
     <div class="product-images">
         <!-- 이미지 리스트를 JSTL로 출력 -->
@@ -150,6 +155,21 @@
                     </c:when>
                     <c:otherwise>
                         <form action="/shop/purchase">
+                            <%
+         				    // DTO 객체 생성 및 초기화
+         				    List<PurchaseHistoryDTO> products = new ArrayList<>();
+                            ProductDTO product = (ProductDTO)request.getAttribute("product");
+         					products.add(new PurchaseHistoryDTO(
+         							product.getProductId(),
+         							1, Integer.valueOf(product.getPrice()), 
+									product.getMainImage()
+								)
+        					);
+         				    
+         				    // 객체를 request attribute로 저장
+         				    session.setAttribute("products", products);
+                            %>
+
                             <button
                                     style="width: 300px; height: 50px; font-size: 14px; background-color: black; border-radius: 30px; color: white;">
                                 구매하기
