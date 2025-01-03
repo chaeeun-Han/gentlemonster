@@ -32,7 +32,7 @@ public class PurchaseDAO {
 	}
 	
 	// 구매하기
-	public Long postPurchase(PurchaseInformationDTO purchase, CustomerDTO customer) {
+	public Long postPurchase(PurchaseInformationDTO purchase, long customerId) {
 		Connection con = null;
 		Long purchaseId = null;
 
@@ -50,7 +50,7 @@ public class PurchaseDAO {
 			stmt.setString(4, purchase.getPhoneNumber());
 			stmt.setString(5, purchase.getReceiver());
 			stmt.setString(6, purchase.getAddress());
-			stmt.setLong(7, customer.getCustomerId());
+			stmt.setLong(7, customerId);
 			
 			int row = stmt.executeUpdate();
 	        if (row > 0) {

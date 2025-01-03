@@ -2,6 +2,7 @@ package com.gentlemonster.web.handler;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,30 +10,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.gentlemonster.web.RequestMapping;
+import com.gentlemonster.web.dao.MemberDAO;
 import com.gentlemonster.web.dao.PurchaseDAO;
 import com.gentlemonster.web.dao.PurchaseHistoryDAO;
 import com.gentlemonster.web.dto.CustomerDTO;
 import com.gentlemonster.web.dto.PurchaseHistoryDTO;
 import com.gentlemonster.web.dto.PurchaseInformationDTO;
 
+
 @RequestMapping("/shop/purchase")
 public class PurchaseHandler implements CommandHandler{
 	private PurchaseDAO purchaseDAO;
-	private PurchaseHistoryDAO PurchaseHistoryDAO;
-	CustomerDTO seesionCustomer;
+	private PurchaseHistoryDAO purchaseHistoryDAO;
+	private MemberDAO memberDAO;
 
 	public PurchaseHandler() {
 		purchaseDAO = new PurchaseDAO();
-		PurchaseHistoryDAO = new PurchaseHistoryDAO();
-		
-		// 임시 세션 생성
-		seesionCustomer = new CustomerDTO();
-		seesionCustomer.setCustomerId(1L);
-		seesionCustomer.setUserId("id");
-		seesionCustomer.setUserPw("password");
-		seesionCustomer.setBirthday(new Timestamp(System.currentTimeMillis()));
-		seesionCustomer.setEmail("metanet@naver.com");
-		seesionCustomer.setAddress("서울");
+		purchaseHistoryDAO = new PurchaseHistoryDAO();
+		memberDAO = new MemberDAO();
 	}
 	
 	@Override
@@ -42,12 +37,18 @@ public class PurchaseHandler implements CommandHandler{
 
 		// 세션을 통해서 고객 정보 가져오기
 		HttpSession session = request.getSession();
-		session.setAttribute("customer", seesionCustomer); // 제거 예정
-		CustomerDTO customer = (CustomerDTO) session.getAttribute("customer");
+		
+		if(session.getAttribute("userid") == null) { // 로그인이 되지 않은 상태
+			// TODO : 로그인 모달창 띄우기
+			return "redirect:/shop?bigCategoryId=1&smallCategoryId=view-all";
+		}
+
+		// 사용자 ID
+		String userId = (String) session.getAttribute("userid");
 		
 		if("GET".equals(request.getMethod())) { // GET 요청 - 구매 페이지 반환			
 			// 고객의 주소 화면에 출력
-			request.setAttribute("customer", customer);
+			request.setAttribute("address", memberDAO.getCustomer(userId).getAddress());
 			
 			// TODO : 고객이 주문한 상품 화면에 출력
 			
@@ -56,9 +57,6 @@ public class PurchaseHandler implements CommandHandler{
 		} else if("POST".equals(request.getMethod())) { // POST 요청 - 구매하기 후 완료 텍스트 띄우기
 			// attribute를 통해서 구매할 물건 목록 불러오기
 			List<PurchaseHistoryDTO> products = (List<PurchaseHistoryDTO>)session.getAttribute("products");
-//			for(PurchaseHistoryDTO purchase : products) {
-//				System.out.println(purchase);
-//			}
 			
 			// 구매 정보 받아오기
 			LocalDateTime purchaseTime = LocalDateTime.now();
@@ -75,10 +73,11 @@ public class PurchaseHandler implements CommandHandler{
 			);
 			
 			// 구매하기
-			Long purchaseId = purchaseDAO.postPurchase(purchase, customer);
+			CustomerDTO customer = memberDAO.getCustomer(userId);
+			Long purchaseId = purchaseDAO.postPurchase(purchase, customer.getCustomerId());
 			
 			// 구매한 목록 저장하기
-			PurchaseHistoryDAO.postPurchaseHistorys(products, purchaseId);
+			purchaseHistoryDAO.postPurchaseHistorys(products, purchaseId);
 
 			// view 설정
 			view = "redirect:purchase-history?id="+purchaseId;
