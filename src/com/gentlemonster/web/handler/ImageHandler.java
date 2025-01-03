@@ -29,9 +29,9 @@ public class ImageHandler implements CommandHandler {
         request.setAttribute("imageList", imageList);
         ProductDTO productDTO = image.getProduct(id);
         request.setAttribute("product", productDTO);
-//        List<String> mainImage = new ArrayList<>(image.getSimilarProduct(id));
-//        request.setAttribute("mainImage", mainImage);
-//        HttpSession session = request.getSession();
+        List<String> mainImage = new ArrayList<>(image.getSimilarProduct(id));
+        request.setAttribute("mainImage", mainImage);
+        HttpSession session = request.getSession();
 
         return "/shop/item.jsp";
     }
