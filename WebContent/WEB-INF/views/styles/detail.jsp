@@ -98,8 +98,14 @@ p {
 			</button>
 			<p class="item-name">${product.productName}</p>
 			<p class="item-price">${product.price}</p>
-			<button class="buy">구매하기</button>
+			<button class="buy" onclick="buyProduct('${product.productId}')">구매하기</button>
 		</div>
 	</div>
+	<script>
+	function buyProduct(productId) {
+	    window.parent.closeModal(event);
+	    window.parent.location.href= `/shop/item?id=${productId}`;
+	}
+	</script>
 </body>
 </html>

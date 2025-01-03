@@ -139,27 +139,22 @@
 			</div>
 		</div>
 	</div>
-
 	<script>
-	// 모달 열기
-	function openModal(productId, imageUrl, instagramId) {
-		const iframe = document.querySelector("#modal-iframe");
-		iframe.src = "/styles/detail?id=" + encodeURIComponent(productId);
-		document.querySelector("#style-modal").style.visibility = "visible";
-	}
-
-	// 모달 닫기
-	function closeModal(event) {
-		const modalContent = document.querySelector(".modal-content");
-		if (!modalContent.contains(event.target)) {
-			document.querySelector("#style-modal").style.visibility = "hidden";
-			document.querySelector("#modal-iframe").src = ""; // iframe 초기화
+		function openModal(productId, imageUrl, instagramId) {
+			const iframe = document.querySelector("#modal-iframe");
+			iframe.src = "/styles/detail?id=" + encodeURIComponent(productId);
+			document.querySelector("#style-modal").style.visibility = "visible";
 		}
-	}
 
-	// 모달 외부 클릭 감지
-	document.querySelector("#style-modal").addEventListener("click", closeModal);
+		function closeModal(event) {
+			const modalContent = document.querySelector(".modal-content");
+			if (!modalContent.contains(event.target)) {
+				document.querySelector("#style-modal").style.visibility = "hidden";
+				document.querySelector("#modal-iframe").src = "";
+			}
+		}
 
+		document.querySelector("#style-modal").addEventListener("click", closeModal);
 	</script>
 </body>
 </html>
