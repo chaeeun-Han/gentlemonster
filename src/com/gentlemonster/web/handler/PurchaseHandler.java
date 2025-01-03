@@ -1,19 +1,28 @@
 package com.gentlemonster.web.handler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.gentlemonster.web.RequestMapping;
+import com.gentlemonster.web.dao.ImageDAO;
 import com.gentlemonster.web.dao.MemberDAO;
 import com.gentlemonster.web.dao.PurchaseDAO;
 import com.gentlemonster.web.dao.PurchaseHistoryDAO;
 import com.gentlemonster.web.dto.CustomerDTO;
+import com.gentlemonster.web.dto.ImageDTO;
+import com.gentlemonster.web.dto.ProductDTO;
 import com.gentlemonster.web.dto.PurchaseHistoryDTO;
 import com.gentlemonster.web.dto.PurchaseInformationDTO;
 
@@ -23,11 +32,13 @@ public class PurchaseHandler implements CommandHandler{
 	private PurchaseDAO purchaseDAO;
 	private PurchaseHistoryDAO purchaseHistoryDAO;
 	private MemberDAO memberDAO;
+	private ImageDAO imageDAO;
 
 	public PurchaseHandler() {
 		purchaseDAO = new PurchaseDAO();
 		purchaseHistoryDAO = new PurchaseHistoryDAO();
 		memberDAO = new MemberDAO();
+		imageDAO = new ImageDAO();
 	}
 	
 	@Override
@@ -50,14 +61,19 @@ public class PurchaseHandler implements CommandHandler{
 			// 고객의 주소 화면에 출력
 			request.setAttribute("address", memberDAO.getCustomer(userId).getAddress());
 			
-			// TODO : 고객이 주문한 상품 화면에 출력
+			// 파라미터값들을  List<PurchaseHistoryDTO>로 파싱하는 메서드
+			List<PurchaseHistoryDTO> products = parseToProducts(request);
+			request.setAttribute("products", products);
+
+			// TODO : 고객이 주문한 상품 화면(장바구니)에 출력
+			
 			
 			// view 설정
-			view = "/shop/purchase.jsp";
+			view = "/shop/purchase.jsp";            
 		} else if("POST".equals(request.getMethod())) { // POST 요청 - 구매하기 후 완료 텍스트 띄우기
-			// attribute를 통해서 구매할 물건 목록 불러오기
-			List<PurchaseHistoryDTO> products = (List<PurchaseHistoryDTO>)session.getAttribute("products");
-			
+			// 파라미터값들을  List<PurchaseHistoryDTO>로 파싱하는 메서드
+			List<PurchaseHistoryDTO> products = parseToProducts(request);
+
 			// 구매 정보 받아오기
 			LocalDateTime purchaseTime = LocalDateTime.now();
 			int totalPrice = products.stream().mapToInt(o -> o.getPrice()).sum();
@@ -84,5 +100,33 @@ public class PurchaseHandler implements CommandHandler{
 		}
 		
 		return view;
+	}
+	
+	// 파라미터값들을  List<PurchaseHistoryDTO>로 파싱하는 메서드
+	private List<PurchaseHistoryDTO> parseToProducts(HttpServletRequest request) {
+	    String[] productIds = request.getParameterValues("productId");
+	    String[] productNames = request.getParameterValues("productName");
+	    String[] productCounts = request.getParameterValues("productCount");
+	    String[] prices = request.getParameterValues("price");
+	    String[] imgUrls = request.getParameterValues("imgUrl");
+
+	    List<PurchaseHistoryDTO> products = new ArrayList<>();
+	    if (productIds != null) {
+	        for (int i = 0; i < productIds.length; i++) {
+	            PurchaseHistoryDTO product = new PurchaseHistoryDTO();
+	            product.setProductId(Long.valueOf(productIds[i]));
+	            product.setProductName(productNames[i]);
+	            product.setProductCount(Integer.valueOf(productCounts[i]));
+	            product.setPrice(Integer.valueOf(prices[i]));
+	            product.setImgUrl(imgUrls[i]);
+	            
+	            // 중복된 데이터 저장 방지
+	            if (!products.contains(product)) {
+	                products.add(product);
+	            }
+	        }
+	    }
+
+	    return products;
 	}
 }
