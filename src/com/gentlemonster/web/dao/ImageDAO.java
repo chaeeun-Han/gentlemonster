@@ -16,129 +16,125 @@ import com.gentlemonster.web.dto.ImageDTO;
 import com.gentlemonster.web.dto.ProductDTO;
 
 public class ImageDAO {
+	static DataSource dataSource;
+	static {
+		try {
+			Context context = new InitialContext();
+			dataSource = (DataSource) context.lookup("java:comp/env/jdbc/Oracle");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
 
-    static DataSource dataSource;
+	public ProductDTO getProduct(String productId) {
+		
+		Connection con = null;
+		ProductDTO productDTO = new ProductDTO();
+		
+		try {
+			con = dataSource.getConnection();
+			String sql = "select product_name, price, color_count, product_count, description, detail "
+					+ "from product "
+					+ "where product_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, productId);
+			ResultSet rs = pstmt.executeQuery();
+			System.out.println("1");
+			
+			while (rs.next()) {
+				productDTO.setProductId(Long.parseLong(productId));
+				productDTO.setProductName(rs.getString(1));
+				productDTO.setPrice(rs.getString(2));
+				productDTO.setColorCount(rs.getInt(3));
+				productDTO.setProductCount(rs.getInt(4));
+				productDTO.setDiscription(rs.getString(5));
+				productDTO.setDetail(rs.getString(6));
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		
+		return productDTO; 
+	}
 
-    static {
-        try {
-            Context context = new InitialContext();
-            dataSource = (DataSource) context.lookup("java:comp/env/jdbc/Oracle");
-        } catch (NamingException e) {
-            e.printStackTrace();
-        }
-    }
+	public List<ImageDTO> getImage(String productId) {
 
-    public ProductDTO getProduct(String productId) {
+		Connection con = null;
+		List<ImageDTO> list = new ArrayList<>();
+		try {
+			con = dataSource.getConnection();
+			String sql = "select * " + "from image where product_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, productId);
 
-        Connection con = null;
-        ProductDTO productDTO = new ProductDTO();
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ImageDTO imageDTO = new ImageDTO();
+				imageDTO.setImageId(rs.getLong(1));
+				imageDTO.setProductId(rs.getLong(2));
+				imageDTO.setImageUrl(rs.getString(3));
+				list.add(imageDTO);
+			}
 
-        try {
-            con = dataSource.getConnection();
-            String sql = "select product_name, price, color_count, product_count, description, detail "
-                + "from product " + "where product_id = ?";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, productId);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                productDTO.setProductId(Long.parseLong(productId));
-                productDTO.setProductName(rs.getString(1));
-                productDTO.setPrice(rs.getString(2));
-                productDTO.setColorCount(rs.getInt(3));
-                productDTO.setProductCount(rs.getInt(4));
-                productDTO.setDiscription(rs.getString(5));
-                String detail = "- ";
-                detail += rs.getString(6);
-                detail = detail.replace("#", "<br />- ");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		return list;
+	}
+	
+	public List<String> getSimilarProduct(String productId) {
 
-                productDTO.setDetail(detail);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        } finally {
-            closeConnection(con);
-        }
+		Connection con = null;
+		List<String> mainImage = new ArrayList<>();
+		try {
+			// 같은 종류의 다른 색상의 product name을 가져오는 과정
+			con = dataSource.getConnection();
+			String sql = "select product_name " 
+						+ "from image "
+						+ "where product_id = ? "
+						;
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, productId);
 
-        return productDTO;
-    }
+			ResultSet rs = pstmt.executeQuery();
+			List<String> nameList = new ArrayList<>();
+			StringTokenizer st = new StringTokenizer(rs.getString(1), " ");
+			String firstName = st.nextToken();
+			
+			sql = "select main_image " 
+						+ "from product "
+						+ "where product_name like "
+						+ firstName + "%"
+						;
+			pstmt = con.prepareStatement(sql);
 
-    public List<ImageDTO> getImage(String productId) {
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				mainImage.add(rs.getString(1));
+			}
 
-        Connection con = null;
-        List<ImageDTO> list = new ArrayList<>();
-        try {
-            con = dataSource.getConnection();
-            String sql = "select * " + "from image where product_id = ?";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, productId);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		return mainImage;
+	}
 
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                ImageDTO imageDTO = new ImageDTO();
-                imageDTO.setImageId(rs.getLong(1));
-                imageDTO.setProductId(rs.getLong(2));
-                imageDTO.setImageUrl(rs.getString(3));
-                list.add(imageDTO);
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        } finally {
-            closeConnection(con);
-        }
-        return list;
-    }
-
-    public List<String> getSimilarProduct(String productId) {
-
-        Connection con = null;
-        List<String> mainImage = new ArrayList<>();
-        try {
-            // 같은 종류의 다른 색상의 product name을 가져오는 과정
-            con = dataSource.getConnection();
-            String sql = "select product_name  "
-                + "from product "
-                + "where product_id = ?";
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, productId);
-            ResultSet rs = pstmt.executeQuery();
-            StringTokenizer st;
-            String firstName = "";
-            while (rs.next()) {
-                String nl = rs.getString(1);
-                st = new StringTokenizer(nl, " ");
-                firstName = st.nextToken().toString();
-            }
-
-            sql = "select distinct(main_image) "
-                + "from product "
-                + "where product_name like ?";
-            pstmt = con.prepareStatement(sql);
-
-            pstmt.setString(1, firstName + "%");
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                mainImage.add(rs.getString(1));
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        } finally {
-            closeConnection(con);
-        }
-        return mainImage;
-    }
-
-    private void closeConnection(Connection con) {
-        if (con != null) {
-            try {
-                con.close();
-            } catch (Exception e) {
-                // nothing
-            }
-        }
-    }
+	private void closeConnection(Connection con) {
+		if (con != null) {
+			try {
+				con.close();
+			} catch (Exception e) {
+				// nothing
+			}
+		}
+	}
 }

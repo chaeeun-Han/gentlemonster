@@ -19,12 +19,12 @@
   	<url-pattern>/login</url-pattern>
   	<url-pattern>/member/*</url-pattern>
   </servlet-mapping>
-  <!-- <filter>
+  <filter>
     <filter-name>CartFilter</filter-name>
     <filter-class>com.gentlemonster.web.filter.CartFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>CartFilter</filter-name>
-    <url-pattern>/*</url-pattern> 모든 요청에 필터 적용
-  </filter-mapping> -->
+    <url-pattern>/*</url-pattern> <!-- 모든 요청에 필터 적용-->
+  </filter-mapping>
 </web-app>
