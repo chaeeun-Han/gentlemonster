@@ -13,27 +13,24 @@ import com.gentlemonster.web.dto.ImageDTO;
 import com.gentlemonster.web.dto.ProductDTO;
 
 @RequestMapping("/shop/item")
-public class ImageHandler implements CommandHandler {
+public class ImageHandler implements CommandHandler{
 
-    ImageDAO image;
+	ImageDAO image;
+	public ImageHandler() {
+		image = new ImageDAO();
+	}
+	@Override
+	public String process(HttpServletRequest request, HttpServletResponse response) {
 
-    public ImageHandler() {
-        image = new ImageDAO();
-    }
-
-    @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
-
-        String id = request.getParameter("id");
-        List<ImageDTO> imageList = new ArrayList<>(image.getImage(id));
-        request.setAttribute("imageList", imageList);
-        ProductDTO productDTO = image.getProduct(id);
-        request.setAttribute("product", productDTO);
-        List<String> mainImage = new ArrayList<>(image.getSimilarProduct(id));
-        request.setAttribute("mainImage", mainImage);
-        HttpSession session = request.getSession();
-
-        return "/shop/item.jsp";
-    }
+		String id = request.getParameter("id");
+		List<ImageDTO> imageList = new ArrayList<>(image.getImage(id));
+		request.setAttribute("imageList", imageList);
+		ProductDTO productDTO = image.getProduct(id);
+		request.setAttribute("product", productDTO);
+		HttpSession session = request.getSession();
+		
+		
+		return "/shop/item.jsp";
+	}
 
 }
