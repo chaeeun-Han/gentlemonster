@@ -153,11 +153,17 @@ div#side_right {
 							<br>
 						</c:when>
 						<c:otherwise>
-							<form action="/shop/purchase">
-								<button
-									style="width: 300px; height: 50px; font-size: 14px; background-color: black; border-radius: 30px; color: white;">
-									구매하기</button>
-							</form>
+	                        <form action="/shop/purchase">
+							    <input type="hidden" name="productId" value="${product.productId}">
+							    <input type="hidden" name="productName" value="${product.productName}">
+							    <input type="hidden" name="productCount" value="1">
+							    <input type="hidden" name="price" value="${product.price}">
+							    <input type="hidden" name="imgUrl" value="${product.mainImage}">
+		                        <button
+		                                style="width: 300px; height: 50px; font-size: 14px; background-color: black; border-radius: 30px; color: white;">
+							                            구매하기
+		                        </button>
+	                        </form>
 							<br>
 							<br>
 							<form action="/shop/purchase">

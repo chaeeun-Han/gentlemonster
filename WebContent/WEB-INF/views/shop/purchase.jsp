@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +95,14 @@ hr {
 	<div class="container">
 		<div class="delivery-info">
 			<p class="title">배송 정보</p>
-			<form action="/purchase" method="post">
+			<form action="/shop/purchase" method="post">
+				<c:forEach var="product" items="${products}">
+				    <input type="hidden" name="productId" value="${product.productId}">
+				    <input type="hidden" name="productName" value="${product.productName}">
+				    <input type="hidden" name="productCount" value="${product.productCount}">
+				    <input type="hidden" name="price" value="${product.price}">
+				    <input type="hidden" name="imgUrl" value="${product.imgUrl}">
+				</c:forEach>
 				<div class="option">
 					<p class="option-title">성</p>
 					<input class="option-input" type="text" name="first"
@@ -111,15 +120,13 @@ hr {
 				</div>
 				<div class="option">
 					<p class="option-title">주소</p>
-					<input class="option-input" type="text" name="address"
+					<input class="option-input" type="text" name="address" value="${address}"
 						placeholder="배송지의 주소를 적어 주세요." required="required">
 				</div>
 				<hr>
 				<div class="buttons">
-					<button type="button" class="exit"
-						onclick="window.location.href='/styles'">취소</button>
-					<button type="button" class="purchase" data-bs-toggle="modal"
-						data-bs-target="#purchaseModal" value="${address}" required="required">결제하기</button>
+					<button type="button" class="exit" onclick="window.location.href='/styles'">취소</button>
+					<button type="button" class="purchase" data-bs-toggle="modal" data-bs-target="#purchaseModal">결제하기</button>
 				</div>
 			</form>
 		</div>
@@ -138,9 +145,10 @@ hr {
 					<h5 class="mb-0">구매가 완료되었습니다. 감사합니다!</h5>
 				</div>
 				<div class="modal-footer p-0 justify-content-center">
-					<button type="button"
+					<button type="submit"
 						class="selected-btn btn btn-lg btn-link fs-6 text-decoration-none m-0 rounded-0"
-						data-bs-dismiss="modal">
+						data-bs-dismiss="modal" 
+						onclick="submitForm()">
 						<strong>확인</strong>
 					</button>
 				</div>
@@ -148,7 +156,11 @@ hr {
 			</div>
 		</div>
 	</div>
-
-
 </body>
+<script>
+    function submitForm() {
+        // form 요청 보내기
+        document.querySelector('form').submit();
+    }
+</script>
 </html>
