@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.gentlemonster.web.RequestMapping;
 import com.gentlemonster.web.dao.PurchaseListDAO;
@@ -22,13 +23,10 @@ public class PurchaseListHandler implements CommandHandler{
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) {
 
-		CustomerDTO customer = (CustomerDTO) request.getSession().getAttribute("customer");
-		if (customer == null) {
-			throw new RuntimeException("로그인한 사용자가 없습니다.");
-		}
-		Long customerId = customer.getCustomerId();
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("userid");
 		
-		List<PurchaseListDTO> purchaseList = purchaseListDAO.getPurchaseList(customerId);
+		List<PurchaseListDTO> purchaseList = purchaseListDAO.getPurchaseList(userId);
 		request.setAttribute("purchaseList", purchaseList);
 		
 		return "shop/purchaseList.jsp";

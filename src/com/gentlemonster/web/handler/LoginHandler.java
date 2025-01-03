@@ -22,15 +22,17 @@ public class LoginHandler implements CommandHandler{
 	public String process(HttpServletRequest request, HttpServletResponse response) {
 		
 		if ("POST".equalsIgnoreCase(request.getMethod())) {
-			String userid = request.getParameter("userid");
+			String id = request.getParameter("userid");
 			String password = request.getParameter("password");
 			HttpSession session = request.getSession();
 			
 			try {
-				String dbpw = memberDAO.getPassword(userid);
+				String userid = memberDAO.getCustomerId(id, password);
+				String dbpw = memberDAO.getPassword(id);
 
 				if (dbpw.equals(password)) {
 					session.setAttribute("userid", userid);
+					System.out.println("userid: " + session.getAttribute("userid"));
 				} else {
 					throw new RuntimeException("비밀번호가 다릅니다.");
 				}

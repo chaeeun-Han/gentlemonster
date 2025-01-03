@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +22,6 @@ body {
 	padding: 0;
 	background-color: #f5f5f5;
 }
-
 .product-container {
 	display: flex;
 	flex-wrap : wrap;
@@ -32,14 +32,12 @@ body {
 	padding: 40px;
 	border-radius: 8px;
 }
-
 .product-images {
 	display:flex;
 	flex-wrap: wrap;
 	max-width: 600px;
 	justify-content: space-between;
 }
-
 .product-images .main-image {
 	flex : 0 1 calc(50%- 5px);
 	box-sizing: border-box;
@@ -57,21 +55,17 @@ body {
 	border-radius: 4px;
 	cursor: pointer;
 }
-
 .product-details {
 	flex: 1;
 	padding: 20px;
 }
-
 .product-details h1 {
 	font-size: 24px;
 	margin-bottom: 10px;
 }
-
 .product-details p {
 	margin: 10px 0;
 }
-
 .notification-btn {
 	padding: 10px 20px;
 	background-color: #007bff;
@@ -129,12 +123,19 @@ div#side_right {
 						style="width: 150px; height: 30px; font-size: 10px; background-color: black; border-radius: 20px; color: white;">
 						구매하기</button>
 					<br> <br>
+					<!--<form id="addForm" action="/shop/cart" method="post" >
+					<input type="hidden" id="item-id" name="itemid" value=${product.productId}>
 					<button
-						style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;">
+						id="addBtn" style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;" onclick="openCartModal()" class="open">
 						장바구니 담기</button>
+					</form>
+					<button
+						style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;" onclick="openCartModal()" class="open">
+						장바구니 담기</button> -->
+					<button id="addBtn" style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;" data-itemid="${product.productId}" type="button">장바구니 담기</button>
+					<p>상품 ID: <c:out value="${product.productId}" /></p>
 					<br> <br>
-					</c:otherwise>
-					
+					</c:otherwise>				
 					</c:choose>
 				</div>
 				<hr style="color: gray">
@@ -144,6 +145,101 @@ div#side_right {
 				</div>
 			</div>
 		</div>
+		
+		<!-- modal 띄우기 -->
+		<div id="cart-modal">
+			<div class="cart-modal-content">
+			<!-- 외부 modal 불러오는 곳 -->
+			
+			</div>
+		</div>
+		
+		<script>
+			document.querySelector('#addBtn').addEventListener('click', function() {
+		        const itemId = this.dataset.itemid;
+		        const params = new URLSearchParams();
+		        params.append('itemid', itemId);
+		        console.log(itemId);
+		        fetch('/shop/cart', {
+		            method: 'POST',
+		            headers: {
+		                'Content-Type': 'application/x-www-form-urlencoded',  // URL 인코딩 방식
+		            },
+		            body: params
+		        }).then(response => {
+		            if (!response.ok) {
+		                throw new Error('장바구니 추가 실패');
+		            }
+		            console.log('장바구니 추가 성공');
+		            openCartModal();
+		        }).catch(error => {
+		            console.error('오류:', error);
+		        });
+		    });
+		</script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			// 모달 열기
+		    function openCartModal() {
+		      // 모달이 로드된 후에 load() 호출
+		      $('.cart-modal-content').load("/shop/cart");
+		      // const modal = document.getElementById('cart-modal');
+		      // modal.classList.add('show');  // show 클래스 추가하여 모달 보이기
+	          // modal.querySelector('.cart-modal-content').classList.add('show'); 
+	          console.log("열기 버튼 클릭");
+	          document.querySelector("#cart-modal").style.visibility = "visible";
+	          document.querySelector(".cart-modal-content").style.transform = "translateX(0)";
+	          document.querySelector("#cart-modal").style.opacity = "1";
+		    }	    
+			// 모달 닫기
+			function closeModal() {
+				document.querySelector("#cart-modal").style.visibility = "hidden";
+				console.log("닫기 됨");
+				window.updateCart();
+			}
+			// 모달 외부 클릭 시 닫기
+			window.onclick = function(event) {
+				const modal = document.querySelector("#cart-modal");
+				if (event.target === modal) {
+					closeModal();
+				}
+			}
+		</script>
+		
+	<!-- 삭제 버튼 클릭시 modal 띄우기 -->	
+	<div class="modal" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content rounded-4 shadow">
+		      <div class="modal-body p-4 text-center">
+		        <h5>삭제하시겠습니까?</h5>
+		        <p class="mb-0">장바구니에서 해당 상품을 삭제 시 복구되지 않습니다.</p>
+		      </div>
+		      <div class="modal-footer flex-nowrap p-0">
+		        <button type="button" id="delete-btn" data-cartid="" onclick="add()" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>삭제</strong></button>
+		        <button type="button" id="close-delete" data-bs-dismiss="modal" aria-level="Close" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0">취소</button>
+		      </div>
+		    </div>
+	    </div> 
+    </div>
+    <script>
+	 // 삭제 버튼 클릭 시 cartId를 delete-modal로 전달
+	    const deleteButtons = document.querySelector('.item-delete');
+	
+	 
+	      deleteButtons.addEventListener('click', function() {
+	        const cartId = this.dataset.cartid;  // data-cartid 속성값 가져오기
+	        const deleteButton = document.getElementById('delete-btn');  // 삭제 버튼 찾기
+	        console.log(cartId);
+	        // 삭제 버튼에 cartId를 데이터로 저장
+	        deleteButton.dataset.cartid = cartId;
+	      });
+	    
+		 // 모달 닫기
+		function add() {
+			const cartIdToDelete = this.dataset.cartid;  // 삭제할 cartId 가져오기
+		      console.log('삭제할 cartId:', cartIdToDelete);  // 해당 cartId를 출력
+		}
+    </script>
 </body>
 
 </html>

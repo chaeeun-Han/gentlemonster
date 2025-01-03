@@ -27,18 +27,17 @@ public class PurchaseListDAO {
 		}
 	}
 	
-	public List<PurchaseListDTO> getPurchaseList(Long customerId) {
+	public List<PurchaseListDTO> getPurchaseList(String customerId) {
 		List<PurchaseListDTO> purchaseList = new ArrayList<PurchaseListDTO>();
 		Connection con = null;
-		//상품명, 개수, 가격
-		//purchase.purchase_time, purchase.purchase_id, purchase_history.product_count, purchase_history.price, prd.price, i.image_url 
+ 
 		try {
 			con = dataSource.getConnection();
 			String sql = "select purchase_id, to_char(purchase_time, 'YYYY-MM-DD') as purchase_time "
 					+ "from purchase "
 					+ "where customer_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setLong(1, customerId);
+			stmt.setLong(1, Long.parseLong(customerId));
 			
 			ResultSet rs = stmt.executeQuery();
 
