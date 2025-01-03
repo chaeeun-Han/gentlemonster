@@ -12,20 +12,6 @@ p {
 	margin: 0px;
 }
 
-#style-modal {
-	visibility: hidden;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(255, 255, 255, 0.7);
-}
-
 .modal-content {
 	background-color: #fff;
 	padding: 15px;
@@ -60,17 +46,6 @@ p {
 	width: 50%;
 	height: 430px;
 	position: relative;
-}
-
-.close {
-	position: absolute;
-	right: 0px;
-	background: none;
-	border: none;
-	text-align: right;
-	font-size: 14px;
-	cursor: pointer;
-	background: none;
 }
 
 .item-detail {
@@ -118,14 +93,11 @@ p {
 			<img class="style-image" alt="스타일 이미지 URL" src="${style.imageUrl}">
 		</div>
 		<div class="modal-right">
-			<button class="close">
-				<i class="fa-solid fa-xmark"></i>
-			</button>
 			<button class="item-detail">
-				<img class="item-image" alt="상품 이미지 URL" src="">
+				<img class="item-image" alt="상품 이미지 URL" src="${product.imageUrl}">
 			</button>
-			<p class="item-name">${productId}</p>
-			<p class="item-price">상품 가격</p>
+			<p class="item-name">${product.productName}</p>
+			<p class="item-price">${product.price}</p>
 			<button class="buy">구매하기</button>
 		</div>
 	</div>

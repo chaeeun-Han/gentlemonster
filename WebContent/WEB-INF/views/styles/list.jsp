@@ -109,6 +109,8 @@
 	height: 550px;
 	border: none;
 	display: flex;
+	margin: auto;
+	z-index: 2;
 }
 </style>
 </head>
@@ -124,40 +126,40 @@
 		</div>
 		<div id="images" style="padding-bottom: 70px;">
 			<c:forEach var="style" items="${styles}">
-				<button id="image_button" onclick="openModal('${style.productId}', '${style.imageUrl}', '${style.instagramId}')">
+				<button id="image_button"
+					onclick="openModal('${style.productId}', '${style.imageUrl}', '${style.instagramId}')">
 					<img src="${style.getImageUrl() }" />
 				</button>
-				<div id="style-modal">
-					<div class="modal-content">
-						<iframe id="modal-iframe"
-							style="width: 100%; height: 100%; border: none;"></iframe>
-					</div>
-				</div>
 			</c:forEach>
+		</div>
+		<div id="style-modal">
+			<div class="modal-content">
+				<iframe id="modal-iframe"
+					style="width: 100%; height: 100%; border: none;"></iframe>
+			</div>
 		</div>
 	</div>
 
 	<script>
-		// 모달 열기
-		function openModal(productId, imageUrl, instagramId) {
-			const iframe = document.querySelector("#modal-iframe");
-			iframe.src = "/styles/detail?id=" + encodeURIComponent(productId);
-			document.querySelector("#style-modal").style.visibility = "visible";
-		}
+	// 모달 열기
+	function openModal(productId, imageUrl, instagramId) {
+		const iframe = document.querySelector("#modal-iframe");
+		iframe.src = "/styles/detail?id=" + encodeURIComponent(productId);
+		document.querySelector("#style-modal").style.visibility = "visible";
+	}
 
-		// 모달 닫기
-		function closeModal() {
+	// 모달 닫기
+	function closeModal(event) {
+		const modalContent = document.querySelector(".modal-content");
+		if (!modalContent.contains(event.target)) {
 			document.querySelector("#style-modal").style.visibility = "hidden";
-			document.querySelector("#modal-iframe").src = "";
+			document.querySelector("#modal-iframe").src = ""; // iframe 초기화
 		}
+	}
 
-		// 모달 외부 클릭 시 닫기
-		window.onclick = function(event) {
-			const modal = document.querySelector("#style-modal");
-			if (event.target === modal) {
-				closeModal();
-			}
-		}
+	// 모달 외부 클릭 감지
+	document.querySelector("#style-modal").addEventListener("click", closeModal);
+
 	</script>
 </body>
 </html>

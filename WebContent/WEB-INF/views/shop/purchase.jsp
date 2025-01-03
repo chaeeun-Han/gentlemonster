@@ -97,29 +97,29 @@ hr {
 				<div class="option">
 					<p class="option-title">성</p>
 					<input class="option-input" type="text" name="first"
-						placeholder="성을 적어 주세요.">
+						placeholder="성을 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">이름</p>
 					<input class="option-input" type="text" name="last"
-						placeholder="이름을 적어 주세요.">
+						placeholder="이름을 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">전화번호</p>
 					<input class="option-input" type="text" name="phone"
-						placeholder="전화번호를 적어 주세요.">
+						placeholder="전화번호를 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">주소</p>
 					<input class="option-input" type="text" name="address"
-						placeholder="배송지의 주소를 적어 주세요.">
+						placeholder="배송지의 주소를 적어 주세요." required="required">
 				</div>
 				<hr>
 				<div class="buttons">
 					<button type="button" class="exit"
 						onclick="window.location.href='/styles'">취소</button>
 					<button type="button" class="purchase" data-bs-toggle="modal"
-						data-bs-target="#purchaseModal">결제하기</button>
+						data-bs-target="#purchaseModal" value="${address}" required="required">결제하기</button>
 				</div>
 			</form>
 		</div>
