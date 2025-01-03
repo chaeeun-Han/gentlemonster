@@ -17,6 +17,7 @@
   	<url-pattern>/shop/*</url-pattern>
   	<url-pattern>/styles/*</url-pattern>
   	<url-pattern>/login</url-pattern>
+  	<url-pattern>/member/*</url-pattern>
   </servlet-mapping>
   <filter>
     <filter-name>CartFilter</filter-name>
@@ -24,7 +25,6 @@
   </filter>
   <filter-mapping>
     <filter-name>CartFilter</filter-name>
-    <url-pattern>/*</url-pattern> <!-- 모든 요청에 필터 적용 -->
+    <url-pattern>/*</url-pattern> <!-- 모든 요청에 필터 적용-->
   </filter-mapping>
-  
 </web-app>

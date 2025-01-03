@@ -96,19 +96,22 @@
 			<p class="text">상품</p>
 			<p class="text">가격</p>
 		</div>
-		<c:forEach var="product" items="${products}">
-		<div class="item">
-			<div class="item_left">
-				<img class="item_img" src="${product.getImgUrl()}"/>
-				<div class="item_text">
-					<p class="bold_text">${product.getProductName()}</p>
-					<p class="text">수량: ${product.getProductCount()}</p>
+		<c:forEach var="product" items="${products}" varStatus="status">
+			<div class="item">
+				<div class="item_left">
+					<img class="item_img" src="${product.getImgUrl()}"/>
+					<div class="item_text">
+						<p class="bold_text">${product.getProductName()}</p>
+						<p class="text">수량: ${product.getProductCount()}</p>
+					</div>
+				</div>
+				<div class="item_right">
+					<p class="text"><fmt:formatNumber value="${product.getPrice()}" pattern="#,###"/>원</p>
 				</div>
 			</div>
-			<div class="item_right">
-				<p class="text"><fmt:formatNumber value="${product.getPrice()}" pattern="#,###"/>원</p>
-			</div>
-		</div>
+			<c:if test="${!status.last}">
+				<hr/>
+			</c:if>
 		</c:forEach>
 		<hr style="border: solid 1.5px;"/>
 		<div class="text_container">
@@ -124,13 +127,30 @@
 			<p class="text">총합계(수량:${totalCount})</p>
 			<p class="text"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/>원</p>
 		</div>
+		<hr style="border: solid 1.5px; margin-top:-1px;"/>
+		<div class="item_left" style="margin-top:30px;">
+			<p class="text">배송 정보</p>
+		</div>
+		<div class="item_left">
+			<p class="text">수령인</p>
+			<p id="information">${information.getReceiver()}</p>
+		</div>
+		<div class="item_left">
+			<p class="text">연락처</p>
+			<p id="information">${information.getPhoneNumber()}</p>
+		</div>
+		<div class="item_left">
+			<p class="text">주소</p>
+			<p id="information">${information.getAddress()}</p>
+		</div>
+		<hr style="border: solid 1.5px;"/>
 		<div class="item_left" style="margin-top:30px;">
 			<p class="text">주문번호</p>
 			<p id="information">${purchaseId}</p>
 		</div>
 		<div class="item_left" style="padding-bottom:30px;">
 			<p class="text">주문일</p>
-			<p id="information">${purchaseTime}</p>
+			<p id="information">${information.getPurchaseTime()}</p>
 		</div>
 	</div>
 </body>

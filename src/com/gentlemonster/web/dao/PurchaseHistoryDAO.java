@@ -33,12 +33,10 @@ public class PurchaseHistoryDAO {
 
 		try {
 			con = dataSource.getConnection();
-			String sql = "select prd.product_name, ph.product_count, prd.price, i.image_url "
+			String sql = "select prd.product_name, ph.product_count, prd.price, prd.main_image "
 					+ "from payment_history ph "
 					+ "join product prd "
 					+ "on ph.product_id=prd.product_id "
-					+ "join image i "
-					+ "on i.product_id=prd.product_id "
 					+ "where ph.purchase_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setLong(1, purchase_id);
@@ -50,7 +48,7 @@ public class PurchaseHistoryDAO {
 				dto.setProductName(rs.getString("product_name"));
 				dto.setProductCount(rs.getInt("product_count"));
 				dto.setPrice(rs.getInt("price") * dto.getProductCount());
-				dto.setImgUrl(rs.getString("image_url"));
+				dto.setImgUrl(rs.getString("main_image"));
 				products.add(dto);
 				System.out.println(dto.toString());
 			}
@@ -70,7 +68,7 @@ public class PurchaseHistoryDAO {
 		try {
 			con = dataSource.getConnection();
 			
-			String sql = "select to_char(purchase_time, 'YYYY-MM-DD HH24:MI:SS') as purchase_time, total_price from purchase where purchase_id=?";
+			String sql = "select to_char(purchase_time, 'YYYY-MM-DD HH24:MI:SS') as purchase_time, total_price, received_name, phone_number, address from purchase where purchase_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setLong(1, purchase_id);
 			
@@ -79,6 +77,9 @@ public class PurchaseHistoryDAO {
 			if (rs.next()) {
 				purchaseInfo.setPurchaseTime(rs.getString("purchase_time"));
 				purchaseInfo.setTotalPrice(rs.getInt("total_price"));
+				purchaseInfo.setReceiver(rs.getString("received_name"));
+				purchaseInfo.setPhoneNumber(rs.getString("phone_number"));
+				purchaseInfo.setAddress(rs.getString("address"));
 			} else {
 				throw new SQLException("해당 주문 내역이 없습니다.");
 			}

@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseInformationDTO {
-	private String purchaseTime;
-	private int totalPrice;
-	private String receiver;
-	private String phoneNumber;
+@NoArgsConstructor
+public class MemberDTO {
+	private String userid;
+	private String password;
+	private String passwordCheck;
+	private String birthday;
+	private String email;
 	private String address;
 }
