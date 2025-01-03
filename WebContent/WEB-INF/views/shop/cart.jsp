@@ -99,10 +99,19 @@ p {
 .item {
 	display: flex;
 	margin: 20px 0px;
+	position: relative;
+}
+
+.checkbox {
+	margin-right: 5px;
+	position: absolute;
+	top: -5px;
+	left: 5px;
+	cursor: pointer;
 }
 
 .item-detail {
-	margin: 0px;
+	margin-left: 10px;
 	padding: 0px;
 	cursor: pointer;
 	background: none;
@@ -202,6 +211,7 @@ p {
 				<p class="title">장바구니</p>
 				<div class="item-list">
 					<div class="item">
+						<input type="checkbox" class="checkbox" id="checkbox" checked>
 						<button class="item-detail">
 							<img class="item-image" alt="장바구니 상품 이미지 URL"
 								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
@@ -217,29 +227,12 @@ p {
 							<button class="item-delete">삭제</button>
 						</div>
 					</div>
-					<div class="item">
-						<button class="item-detail">
-							<img class="item-image" alt="장바구니 상품 이미지 URL"
-								src="https://www-prd-kr.gentlemonster.com/media/catalog/product/cache/6c6f229b8a7ab97f51028776641e27d1/1/1/11001_LIMITLESS_SPC9_2.jpg">
-						</button>
-						<div class="item-info">
-							<p class="item-name">상품명</p>
-							<p class="item-price">가격</p>
-							<div class="item-quantity">
-								<button class="decrease">-</button>
-								<span class="quantity">1</span>
-								<button class="increase">+</button>
-							</div>
-							<button class="item-delete">삭제</button>
-						</div>
-					</div>
-
 				</div>
 			</div>
 			<div class="modal-bottom">
 				<div class="count-info">
 					<p>배송비</p>
-					<p>원</p>
+					<p>무료</p>
 				</div>
 				<div class="count-info">
 					<p>합계</p>

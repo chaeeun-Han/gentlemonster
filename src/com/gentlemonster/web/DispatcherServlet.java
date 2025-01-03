@@ -64,7 +64,7 @@ public class DispatcherServlet extends HttpServlet {
 		CommandHandler handler = commandHandlerMap.get(command);
 		
 		System.out.println(command + " : " + commandHandlerMap.get(command));
-		
+		 
 		String viewPage = null;
 		try {
 			viewPage = handler.process(request, response);

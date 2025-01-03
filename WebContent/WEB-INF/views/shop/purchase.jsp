@@ -8,6 +8,15 @@
 <meta charset="UTF-8">
 <script src="https://kit.fontawesome.com/cf6e255851.js"
 	crossorigin="anonymous"></script>
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Bootstrap JS, Popper.js -->
+<script
+	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 <style>
 hr {
@@ -47,19 +56,16 @@ hr {
 }
 
 .option-input {
-	width: 94%;
+	width: 100%;
 	height: 40px;
 	margin-top: 5px;
 	padding: 0px 10px;
 	border: 1px solid black;
 }
 
-.button-container {
-    display: flex;
-    justify-content: center; /* 가로 중앙 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
-    gap: 10px; /* 버튼 간 간격 */
-    margin-top: 20px; /* 버튼 상단 여백 */
+.buttons {
+	display: flex;
+	justify-content: space-between;
 }
 
 .exit {
@@ -69,7 +75,6 @@ hr {
 	border: 1px solid black;
 	width: 45%;
 	height: 40px;
-	background-color: white;
 }
 
 .purchase {
@@ -79,7 +84,10 @@ hr {
 	border: 0px;
 	width: 46%;
 	height: 40px;
-	margin-left: 30px;
+}
+
+.selected-btn {
+	width: 100%;
 }
 </style>
 </head>
@@ -87,7 +95,7 @@ hr {
 	<div class="container">
 		<div class="delivery-info">
 			<p class="title">배송 정보</p>
-			<form action="" method="post">
+			<form action="/shop/purchase" method="post">
 				<c:forEach var="product" items="${products}">
 				    <input type="hidden" name="productId" value="${product.productId}">
 				    <input type="hidden" name="productName" value="${product.productName}">
@@ -97,35 +105,62 @@ hr {
 				</c:forEach>
 				<div class="option">
 					<p class="option-title">성</p>
-					<input class="option-input" type="text" name="first" placeholder="성을 적어 주세요." required="required" ">
+					<input class="option-input" type="text" name="first"
+						placeholder="성을 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">이름</p>
-					<input class="option-input" type="text" name="last" placeholder="이름을 적어 주세요." required="required">
+					<input class="option-input" type="text" name="last"
+						placeholder="이름을 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">전화번호</p>
-					<input class="option-input" type="text" name="phone" placeholder="전화번호를 적어 주세요." required="required">
+					<input class="option-input" type="text" name="phone"
+						placeholder="전화번호를 적어 주세요." required="required">
 				</div>
 				<div class="option">
 					<p class="option-title">주소</p>
-					<input class="option-input" type="text" name="address" placeholder="도착지의 주소를 적어 주세요." value="${address}" required="required">
+					<input class="option-input" type="text" name="address" value="${address}"
+						placeholder="배송지의 주소를 적어 주세요." required="required">
 				</div>
 				<hr>
-				<div class="button-container">
-				    <button type="button" class="exit" onclick="history.back();">취소</button>
-				    <button type="submit" class="purchase">결제하기</button>
+				<div class="buttons">
+					<button type="button" class="exit" onclick="window.location.href='/styles'">취소</button>
+					<button type="button" class="purchase" data-bs-toggle="modal" data-bs-target="#purchaseModal">결제하기</button>
 				</div>
 			</form>
 		</div>
+
 		<div class="order-info">
 			<p class="title">주문 내용</p>
 			<!-- 주문 내역 가져다가 쓰기 -->
 		</div>
 	</div>
 
-	<script type="text/javascript">
-		
-	</script>
+	<div class="modal fade" id="purchaseModal" tabindex="-1"
+		aria-labelledby="purchaseModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content rounded-4 shadow">
+				<div class="modal-body p-4 text-center">
+					<h5 class="mb-0">구매가 완료되었습니다. 감사합니다!</h5>
+				</div>
+				<div class="modal-footer p-0 justify-content-center">
+					<button type="submit"
+						class="selected-btn btn btn-lg btn-link fs-6 text-decoration-none m-0 rounded-0"
+						data-bs-dismiss="modal" 
+						onclick="submitForm()">
+						<strong>확인</strong>
+					</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </body>
+<script>
+    function submitForm() {
+        // form 요청 보내기
+        document.querySelector('form').submit();
+    }
+</script>
 </html>
