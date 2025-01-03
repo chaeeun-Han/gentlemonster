@@ -49,6 +49,8 @@ a.login-link {
   margin-right: 10px; /* SVG와 간격 추가 */
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
   <header class="p-3">
@@ -69,7 +71,9 @@ a.login-link {
               placeholder="검색어를 입력하세요" aria-label="Search">
           </form>
           <!-- 로그인 링크 -->
-          <a href="#" class="m-2 text-decoration-none text-reset">로그인</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="m-2 text-decoration-none text-reset">로그인</a>
+          <!-- 회원가입 링크 -->
+          <a href="/member/join" class="m-2 text-decoration-none text-reset">회원가입</a>
           <!-- 구매 내역 링크 -->
           <a href="/shop/purchase-list" class="m-2 me-3 text-decoration-none text-reset">구매내역</a>
           <!-- 쇼핑백 아이콘 -->
@@ -79,7 +83,30 @@ a.login-link {
           <!-- 장바구니 배지 -->
           <span class='badge' id='lblCartCount'> ${cart_count} </span>
         </div>
-      </div>
+        
+		<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+		    <div class="modal-dialog" role="document">
+		        <div class="modal-content rounded-5 shadow">
+		            <div class="modal-header p-5 pb-4 border-bottom-0">
+		                <h2 class="fw-bold mb-0">로그인</h2>
+		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		            </div>
+		            <div class="modal-body p-5 pt-0">
+		                <form action="/member/login" method="post">
+		                    <div class="form-floating mb-3">
+		                        <input type="text" class="form-control rounded-4" name="userid", id="floatingInput" placeholder="아이디">
+		                        <label for="floatingInput">아이디</label>
+		                    </div>
+		                    <div class="form-floating mb-3">
+		                        <input type="password" class="form-control rounded-4" name="password" id="floatingPassword" placeholder="비밀번호">
+		                        <label for="floatingPassword">비밀번호</label>
+		                    </div>
+		                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">로그인</button>
+		                </form>
+		            </div>
+		        </div>
+		    </div>
+		</div>
     </div>
   </header>
 </body>

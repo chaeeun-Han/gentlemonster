@@ -1,7 +1,5 @@
 package com.gentlemonster.web.dto;
 
-import java.sql.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDTO {
-	private Long customerId;
-	private String userId;
-	private String userPw;
-	private Timestamp birthday;
+public class MemberDTO {
+	private String userid;
+	private String password;
+	private String passwordCheck;
+	private String birthday;
 	private String email;
 	private String address;
 }
