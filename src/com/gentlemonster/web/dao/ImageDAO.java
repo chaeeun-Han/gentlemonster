@@ -92,10 +92,10 @@ public class ImageDAO {
         return list;
     }
 
-    public List<String> getSimilarProduct(String productId) {
+    public List<ImageDTO> getSimilarProduct(String productId) {
 
         Connection con = null;
-        List<String> mainImage = new ArrayList<>();
+        List<ImageDTO> image = new ArrayList<>();
         try {
             // 같은 종류의 다른 색상의 product name을 가져오는 과정
             con = dataSource.getConnection();
@@ -113,15 +113,24 @@ public class ImageDAO {
                 firstName = st.nextToken().toString();
             }
 
-            sql = "select distinct(main_image) "
-                + "from product "
-                + "where product_name like ?";
+            sql = "SELECT product_id, main_image "
+            		+ "FROM ( "
+            		+ "    SELECT "
+            		+ "        product_id, "
+            		+ "        main_image, "
+            		+ "        product_name, "
+            		+ "        ROW_NUMBER() OVER (PARTITION BY product_name ORDER BY product_id) AS row_num "
+            		+ "    FROM product "
+            		+ "    WHERE product_name LIKE ? "
+            		+ ") subquery "
+            		+ "WHERE row_num = 1";
+            
             pstmt = con.prepareStatement(sql);
 
-            pstmt.setString(1, firstName + "%");
+            pstmt.setString(1, firstName + " %");
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                mainImage.add(rs.getString(1));
+            	image.add(new ImageDTO(rs.getLong(1), rs.getString(2)));
             }
 
         } catch (Exception e) {
@@ -130,7 +139,7 @@ public class ImageDAO {
         } finally {
             closeConnection(con);
         }
-        return mainImage;
+        return image;
     }
 
     private void closeConnection(Connection con) {
