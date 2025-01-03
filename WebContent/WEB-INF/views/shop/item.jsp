@@ -108,9 +108,6 @@
 </head>
 <body>
 <jsp:include page="/header.jsp"></jsp:include>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="com.gentlemonster.web.dto.*" %>
 
 <div class="product-container">
     <div class="product-images">
@@ -154,27 +151,17 @@
                         <br>
                     </c:when>
                     <c:otherwise>
-                        <form action="/shop/purchase">
-                            <%
-         				    // DTO 객체 생성 및 초기화
-         				    List<PurchaseHistoryDTO> products = new ArrayList<>();
-                            ProductDTO product = (ProductDTO)request.getAttribute("product");
-         					products.add(new PurchaseHistoryDTO(
-         							product.getProductId(),
-         							1, Integer.valueOf(product.getPrice()), 
-									product.getMainImage()
-								)
-        					);
-         				    
-         				    // 객체를 request attribute로 저장
-         				    session.setAttribute("products", products);
-                            %>
-
-                            <button
-                                    style="width: 300px; height: 50px; font-size: 14px; background-color: black; border-radius: 30px; color: white;">
-                                구매하기
-                            </button>
-                        </form>
+	                        <form action="/shop/purchase">
+							    <input type="hidden" name="productId" value="${product.productId}">
+							    <input type="hidden" name="productName" value="${product.productName}">
+							    <input type="hidden" name="productCount" value="1">
+							    <input type="hidden" name="price" value="${product.price}">
+							    <input type="hidden" name="imgUrl" value="${product.mainImage}">
+		                        <button
+		                                style="width: 300px; height: 50px; font-size: 14px; background-color: black; border-radius: 30px; color: white;">
+		                            구매하기
+		                        </button>
+	                        </form>
                         <br>
                         <br>
                         <form action="/shop/purchase">
