@@ -2,6 +2,7 @@ package com.gentlemonster.web.handler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -43,7 +44,14 @@ public class PurchaseHandler implements CommandHandler{
 	
 	@Override
 	public String process(HttpServletRequest request, HttpServletResponse response) {
-		// 이동한 페이지
+	    try {
+	        // POST 요청 본문 인코딩 설정
+	        request.setCharacterEncoding("UTF-8");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+        // 이동한 페이지
 		String view = "/shop/purchase.jsp";
 
 		// 세션을 통해서 고객 정보 가져오기
@@ -55,11 +63,11 @@ public class PurchaseHandler implements CommandHandler{
 		}
 
 		// 사용자 ID
-		String userId = (String) session.getAttribute("userid");
+		Long customerId = Long.valueOf((String) session.getAttribute("userid"));
 		
 		if("GET".equals(request.getMethod())) { // GET 요청 - 구매 페이지 반환			
 			// 고객의 주소 화면에 출력
-			request.setAttribute("address", memberDAO.getCustomer(userId).getAddress());
+			request.setAttribute("address", memberDAO.getCustomer(customerId).getAddress());
 			
 			// 파라미터값들을  List<PurchaseHistoryDTO>로 파싱하는 메서드
 			List<PurchaseHistoryDTO> products = parseToProducts(request);
@@ -89,7 +97,7 @@ public class PurchaseHandler implements CommandHandler{
 			);
 			
 			// 구매하기
-			CustomerDTO customer = memberDAO.getCustomer(userId);
+			CustomerDTO customer = memberDAO.getCustomer(customerId);
 			Long purchaseId = purchaseDAO.postPurchase(purchase, customer.getCustomerId());
 			
 			// 구매한 목록 저장하기
@@ -126,7 +134,7 @@ public class PurchaseHandler implements CommandHandler{
 	            }
 	        }
 	    }
-
+	    
 	    return products;
 	}
 }

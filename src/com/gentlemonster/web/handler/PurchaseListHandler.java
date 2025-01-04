@@ -24,9 +24,9 @@ public class PurchaseListHandler implements CommandHandler{
 	public String process(HttpServletRequest request, HttpServletResponse response) {
 
 		HttpSession session = request.getSession();
-		String userId = (String) session.getAttribute("userid");
+		Long customerId = Long.valueOf((String) session.getAttribute("userid"));
 		
-		List<PurchaseListDTO> purchaseList = purchaseListDAO.getPurchaseList(userId);
+		List<PurchaseListDTO> purchaseList = purchaseListDAO.getPurchaseList(customerId);
 		request.setAttribute("purchaseList", purchaseList);
 		
 		return "shop/purchaseList.jsp";
