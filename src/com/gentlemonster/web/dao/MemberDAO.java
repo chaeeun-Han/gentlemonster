@@ -8,14 +8,13 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.gentlemonster.web.dto.CustomerDTO;
 import com.gentlemonster.web.dto.MemberDTO;
 
 public class MemberDAO {

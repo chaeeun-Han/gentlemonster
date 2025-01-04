@@ -7,17 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.gentlemonster.web.RequestMapping;
-import com.gentlemonster.web.dao.PurchaseListDAO;
+import com.gentlemonster.web.dao.PurchaseDAO;
 import com.gentlemonster.web.dto.CustomerDTO;
 import com.gentlemonster.web.dto.PurchaseListDTO;
 
 @RequestMapping("/shop/purchase-list")
 public class PurchaseListHandler implements CommandHandler{
 
-	private PurchaseListDAO purchaseListDAO;
+	private PurchaseDAO purchaseListDAO;
 	
 	public PurchaseListHandler() {
-		purchaseListDAO = new PurchaseListDAO();
+		purchaseListDAO = new PurchaseDAO();
 	}
 
 	@Override

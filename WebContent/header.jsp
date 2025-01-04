@@ -12,6 +12,19 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 <style>
+#search-modal {
+	visibility: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 70%;
+	background-color: rgba(255, 255, 255, 0.7);
+}
 .custom-search {
   border: 1px solid black; /* 검은 테두리 */
   border-radius: 28px; /* 둥글게 처리 */
@@ -68,9 +81,16 @@ a.login-link {
 
         <div class="d-flex align-items-center">
           <form class="me-3" role="search">
-            <input type="search" class="custom-search"
+            <input type="search" class="custom-search" onClick="openModal()"
               placeholder="검색어를 입력하세요" aria-label="Search">
           </form>
+		  <div id="search-modal">
+			<div class="modal-content">
+				<iframe id="modal-iframe"
+					style="width: 100%; height: 500px; border: none;">
+				</iframe>
+			</div>
+		  </div>
           <!-- 로그인 링크 -->
           <form id="logoutForm" action="/member/logout" method="post" style="display: none;"></form>
           <c:choose>
@@ -142,7 +162,25 @@ a.login-link {
 		</div>
     </div>
   </header>
+ <script>
+ // 검색 모달
+ function openModal() {
+	  const iframe = document.querySelector("#modal-iframe");
+	  iframe.src = "/shop/search";
+	  document.querySelector("#search-modal").style.visibility = "visible";
+ }
+ 
+ function closeModal() {
+	  document.querySelector("#search-modal").style.visibility = "hidden";
+	  document.querySelector("#modal-iframe").src = "";
+ }
+ 
+ window.onclick = function(event) {
+	  const modal = document.querySelector("#search-modal");
+	  if (event.target === modal) {
+		  closeModal();
+	  }
+ }
+ </script>
 </body>
-
-
 </html>

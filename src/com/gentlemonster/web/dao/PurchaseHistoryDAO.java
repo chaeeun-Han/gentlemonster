@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,33 @@ public class PurchaseHistoryDAO {
 			dataSource = (DataSource)context.lookup("java:comp/env/jdbc/Oracle");
 		} catch(NamingException e) {
 			System.out.println(e.getMessage());
+		}
+	}
+	
+	// 구매한 여러 개의 product와 count 저장
+	public void postPurchaseHistorys(List<PurchaseHistoryDTO> products, Long purchaseId) {
+		Connection con = null;
+
+		try {
+			con = dataSource.getConnection();
+			
+			for(PurchaseHistoryDTO purchaseHistory : products) {
+				String sql = "INSERT INTO PAYMENT_HISTORY(product_Id, purchase_id, "
+						+ "product_count, price) "
+						+ "VALUES(?, ?, ?, ?)";
+				PreparedStatement stmt = con.prepareStatement(sql);
+				stmt.setLong(1, purchaseHistory.getProductId());
+				stmt.setLong(2, purchaseId);
+				stmt.setLong(3, purchaseHistory.getProductCount());
+				stmt.setLong(4, purchaseHistory.getPrice());
+				
+				int row = stmt.executeUpdate();
+		        if (row < 1) throw new RuntimeException("payment_history insert error");
+			}
+		} catch(Exception e) {
+			throw new RuntimeException("payment_history insert error : " + e.getMessage());
+		} finally {
+			closeConnection(con);
 		}
 	}
 	
@@ -75,7 +103,7 @@ public class PurchaseHistoryDAO {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				purchaseInfo.setPurchaseTime(rs.getString("purchase_time"));
+				purchaseInfo.setPurchaseTime(rs.getTimestamp("purchase_time").toLocalDateTime());
 				purchaseInfo.setTotalPrice(rs.getInt("total_price"));
 				purchaseInfo.setReceiver(rs.getString("received_name"));
 				purchaseInfo.setPhoneNumber(rs.getString("phone_number"));

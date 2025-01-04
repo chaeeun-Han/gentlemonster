@@ -108,7 +108,7 @@ div#side_right {
 				<div style="width: 150px; float: left">${product.productName}</div>
 				<div style="float: right">${product.price}</div>
 				<br><br>
-				<div style="height: 150px">사진 넣는 구간</div><br>
+				<br>
 				<div style="height: 200px; text-align: center">${product.discription}</div><br><br>
 				<div style="text-align: center">
 					<c:choose>
@@ -123,17 +123,7 @@ div#side_right {
 						style="width: 150px; height: 30px; font-size: 10px; background-color: black; border-radius: 20px; color: white;">
 						구매하기</button>
 					<br> <br>
-					<!--<form id="addForm" action="/shop/cart" method="post" >
-					<input type="hidden" id="item-id" name="itemid" value=${product.productId}>
-					<button
-						id="addBtn" style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;" onclick="openCartModal()" class="open">
-						장바구니 담기</button>
-					</form>
-					<button
-						style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;" onclick="openCartModal()" class="open">
-						장바구니 담기</button> -->
 					<button id="addBtn" style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;" data-itemid="${product.productId}" type="button">장바구니 담기</button>
-					<p>상품 ID: <c:out value="${product.productId}" /></p>
 					<br> <br>
 					</c:otherwise>				
 					</c:choose>
@@ -163,7 +153,7 @@ div#side_right {
 		        fetch('/shop/cart', {
 		            method: 'POST',
 		            headers: {
-		                'Content-Type': 'application/x-www-form-urlencoded',  // URL 인코딩 방식
+		                'Content-Type': 'application/x-www-form-urlencoded',
 		            },
 		            body: params
 		        }).then(response => {
@@ -178,11 +168,14 @@ div#side_right {
 		    });
 		</script>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="/js/cart.js"></script> 
 		<script>
 			// 모달 열기
 		    function openCartModal() {
-		      // 모달이 로드된 후에 load() 호출
-		      $('.cart-modal-content').load("/shop/cart");
+		      $('.cart-modal-content').load("/shop/cart", function () {
+		    	  calculateTotal();
+		    	  initializeEvents();
+		      });
 		      // const modal = document.getElementById('cart-modal');
 		      // modal.classList.add('show');  // show 클래스 추가하여 모달 보이기
 	          // modal.querySelector('.cart-modal-content').classList.add('show'); 
@@ -190,7 +183,44 @@ div#side_right {
 	          document.querySelector("#cart-modal").style.visibility = "visible";
 	          document.querySelector(".cart-modal-content").style.transform = "translateX(0)";
 	          document.querySelector("#cart-modal").style.opacity = "1";
-		    }	    
+			}
+			
+			//이벤트 초기화
+		    function initializeEvents() {
+
+		        // 수량 증가
+		        document.querySelectorAll('.increase').forEach(button => {
+		            button.onclick = function () {
+		                let quantityElement = this.closest('.item').querySelector('.quantity');
+		                let currentQuantity = parseInt(quantityElement.textContent, 10);
+		                quantityElement.textContent = currentQuantity + 1;
+		                calculateTotal();
+		            };
+		        });
+
+		        // 수량 감소
+		        document.querySelectorAll('.decrease').forEach(button => {
+		            button.onclick = function () {
+		                let quantityElement = this.closest('.item').querySelector('.quantity');
+		                let currentQuantity = parseInt(quantityElement.textContent, 10);
+		                if (currentQuantity > 1) {
+		                    quantityElement.textContent = currentQuantity - 1;
+		                    calculateTotal();
+		                }
+		            };
+		        });
+
+		        // 삭제 버튼
+		        document.querySelectorAll('.item-delete').forEach(button => {
+		            button.onclick = function () {
+		                let cartId = this.dataset.cartid;
+		                deleteItem(cartId);
+		            };
+		        });
+
+		        console.log("이벤트 초기화 완료.");
+		    }
+		    
 			// 모달 닫기
 			function closeModal() {
 				document.querySelector("#cart-modal").style.visibility = "hidden";
@@ -220,26 +250,7 @@ div#side_right {
 		      </div>
 		    </div>
 	    </div> 
-    </div>
-    <script>
-	 // 삭제 버튼 클릭 시 cartId를 delete-modal로 전달
-	    const deleteButtons = document.querySelector('.item-delete');
-	
-	 
-	      deleteButtons.addEventListener('click', function() {
-	        const cartId = this.dataset.cartid;  // data-cartid 속성값 가져오기
-	        const deleteButton = document.getElementById('delete-btn');  // 삭제 버튼 찾기
-	        console.log(cartId);
-	        // 삭제 버튼에 cartId를 데이터로 저장
-	        deleteButton.dataset.cartid = cartId;
-	      });
-	    
-		 // 모달 닫기
-		function add() {
-			const cartIdToDelete = this.dataset.cartid;  // 삭제할 cartId 가져오기
-		      console.log('삭제할 cartId:', cartIdToDelete);  // 해당 cartId를 출력
-		}
-    </script>
+	</div>
 </body>
 
 </html>
