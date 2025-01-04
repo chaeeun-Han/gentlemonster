@@ -8,8 +8,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -60,7 +58,7 @@ public class MemberDAO {
 		}
 	}
 	
-	public String getPassword(String userid) {
+	public String getPassword(String id) {
 		String pw = "";
 		Connection con = null;
 		
@@ -69,7 +67,7 @@ public class MemberDAO {
 			String sql = "select user_pw from customer where user_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			
-			stmt.setString(1, userid);
+			stmt.setString(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				pw = rs.getString("user_pw");
@@ -85,7 +83,34 @@ public class MemberDAO {
 		return pw;
 	}
 	
-	// 고객  검색
+	public String getCustomerId(String id, String password) {
+		Connection con = null;
+		String userid;
+		
+		try {
+			con = dataSource.getConnection();
+			String sql = "select customer_id from customer where user_id=? and user_pw=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			
+			stmt.setString(1, id);
+			stmt.setString(2, password);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				userid = String.valueOf(rs.getLong("customer_id"));
+			} else {
+				throw new SQLException("일치하는 회원이 없습니다.");
+			}
+		} catch(SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		
+		return userid;
+	}
+	
 	public CustomerDTO getCustomer(String userId) {
 		Connection con = null;
 		CustomerDTO customer = new CustomerDTO();

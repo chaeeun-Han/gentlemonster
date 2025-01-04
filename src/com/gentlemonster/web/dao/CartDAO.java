@@ -136,4 +136,45 @@ public class CartDAO {
 			e.printStackTrace();
 		}
     }
+    
+    //수정할 장바구니 가져오기
+    public CartDTO getCartToUpdate(String cartid) {
+    	System.out.println("getCartToUpdate 실행됨");
+    	CartDTO item = new CartDTO();
+    	
+    	String selectQuery = "SELECT " +
+                "    c.cart_id, " +
+                "    c.customer_id, " +
+                "    c.product_id, " +
+                "    c.product_count, " +
+                "    p.product_name, " +
+                "    p.price, " +
+                "    p.main_image " +
+                "FROM cart c " +
+                "JOIN product p ON c.product_id = p.product_id " +
+                "WHERE c.cart_id = ?";
+        
+        try (Connection conn = dataSource.getConnection()) {
+        	PreparedStatement ps = conn.prepareStatement(selectQuery);
+            ps.setString(1, cartid);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    
+                    item.setCartId(rs.getLong("cart_id"));
+                    item.setCustomerId(rs.getLong("customer_id"));
+                    item.setProductId(rs.getLong("product_id"));
+                    item.setProductCount(rs.getInt("product_count"));
+                    item.setProductName(rs.getString("product_name"));
+                    item.setPrice(rs.getInt("price"));
+                    item.setMainImage(rs.getString("main_image"));
+                }
+            }
+
+        } catch (SQLException e) {
+        	e.printStackTrace();
+        }
+        System.out.println("cart : " + item.toString());
+		return item;
+    }
 }

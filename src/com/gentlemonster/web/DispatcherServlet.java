@@ -50,11 +50,18 @@ public class DispatcherServlet extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String methodOverride = request.getParameter("action");
+
+	    if (methodOverride != null) {
+	    	request.setAttribute("method", methodOverride.toUpperCase());
+	    }
+		
 		processServlet(request, response);
 	}
 	
 	private void processServlet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
+	    
 		String command = request.getRequestURI();
 		
 		if(command.indexOf(request.getContextPath()) == 0) {
@@ -62,7 +69,7 @@ public class DispatcherServlet extends HttpServlet {
 		}
  
 		CommandHandler handler = commandHandlerMap.get(command);
-		
+
 		System.out.println(command + " : " + commandHandlerMap.get(command));
 		 
 		String viewPage = null;
