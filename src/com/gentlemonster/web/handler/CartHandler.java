@@ -46,6 +46,7 @@ public class CartHandler implements CommandHandler{
 	        else if ("DELETE".equals(method)) { // 장바구니 상품 삭제
 	        	System.out.println("장바구니 delete");
 	        	String cartId = request.getParameter("cartid");
+	        	System.out.println("cartid : " + cartId);
 	        	cartDAO.removeItemFromCart(cartId);
 	            return "/shop/cart.jsp";
 	        } 

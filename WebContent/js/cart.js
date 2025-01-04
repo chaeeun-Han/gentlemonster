@@ -1,42 +1,15 @@
-	calculateTotal();
+   calculateTotal();
     let initialCartState = {};
-    
-	function deleteItem(cartId) {
-    	if (!cartId) {
-    		console.warn('cartId is null');
-    		return;
-    	}
-    	fetch(`/shop/cart?action=DELETE&cartid=${cartId}`, {
-    		method: 'POST',
-    		headers: {
-    			'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                console.warn('Item delete may have failed.');
-            } else {
-            	//cartId를 갖고 있는 아이템 화면에서 삭제
-            	const itemElement = document.querySelector(`.item[data-cartid="${cartId}"]`);
-            	if (itemElement) {
-            		itemElement.remove();
-            	}
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting cart:', error);
-        });
-    }
-    
+       
     //수정 요청
     window.updateCart = function update() {
-    	const updatedItems = [];
-    	
-    	document.querySelectorAll('.item').forEach(item => {
-    		const cartId = item.dataset.cartid;
-    		const currentQuantity = parseInt(item.querySelector('.quantity').textContent, 10);
-    		
-    		if (initialCartState[cartId] !== currentQuantity) {
+       const updatedItems = [];
+       
+       document.querySelectorAll('.item').forEach(item => {
+          const cartId = item.dataset.cartid;
+          const currentQuantity = parseInt(item.querySelector('.quantity').textContent, 10);
+          
+          if (initialCartState[cartId] !== currentQuantity) {
                 updatedItems.push({
                     cartId: cartId,
                     quantity: currentQuantity
@@ -45,13 +18,13 @@
         });
         
         if (updatedItems.length > 0) {
-        	fetch('/shop/cart?action=UPDATE', {
-        		method: 'POST',
-        		headers: {
-        			'Content-Type': 'application/json'
+           fetch('/shop/cart?action=UPDATE', {
+              method: 'POST',
+              headers: {
+                 'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                	updatedItems: updatedItems
+                   updatedItems: updatedItems
                 })
             })
             .then(response => {
@@ -75,54 +48,54 @@
     });
     
     // 수량 감소
-	function decreaseEvent() {
-	    let decreaseButtons = document.querySelectorAll('.decrease');
-	    let quantityDisplays = document.querySelectorAll('.quantity');
-	
-	    decreaseButtons.forEach((button, index) => {
-	        button.onclick = function() {
-	            let currentQuantity = parseInt(quantityDisplays[index].innerText);
-	            if (currentQuantity > 1) {
-	                quantityDisplays[index].innerText = currentQuantity - 1;
-	                calculateTotal();
-	            }
-	        }
-	    });
-	}
-	
-	// 수량 증가
-	function increaseEvent() {
-	    let increaseButtons = document.querySelectorAll('.increase');
-	    let quantityDisplays = document.querySelectorAll('.quantity');
-	
-	    increaseButtons.forEach((button, index) => {
-	        button.onclick = function() {
-	            let currentQuantity = parseInt(quantityDisplays[index].innerText);
-	            quantityDisplays[index].innerText = currentQuantity + 1;
-	            calculateTotal();
-	        }
-	    });	
-	}
+   function decreaseEvent() {
+       let decreaseButtons = document.querySelectorAll('.decrease');
+       let quantityDisplays = document.querySelectorAll('.quantity');
+   
+       decreaseButtons.forEach((button, index) => {
+           button.onclick = function() {
+               let currentQuantity = parseInt(quantityDisplays[index].innerText);
+               if (currentQuantity > 1) {
+                   quantityDisplays[index].innerText = currentQuantity - 1;
+                   calculateTotal();
+               }
+           }
+       });
+   }
+   
+   // 수량 증가
+   function increaseEvent() {
+       let increaseButtons = document.querySelectorAll('.increase');
+       let quantityDisplays = document.querySelectorAll('.quantity');
+   
+       increaseButtons.forEach((button, index) => {
+           button.onclick = function() {
+               let currentQuantity = parseInt(quantityDisplays[index].innerText);
+               quantityDisplays[index].innerText = currentQuantity + 1;
+               calculateTotal();
+           }
+       });   
+   }
     
     //가격 합계 계산
     function calculateTotal() {
-	    let total = 0;
-	    const items = document.querySelectorAll('.item');
-	
-	    items.forEach(item => {
-	        const priceText = item.querySelector('.item-price').textContent.replace(/,/g, '');
-        	const price = parseInt(priceText, 10) || 0;
-	        const quantity = parseInt(item.querySelector('.quantity').textContent, 10) || 0;
-	        total += price * quantity;
-	    });
-	
-	    // 합계 업데이트
-	    const totalAmountElement = document.getElementById('totalAmount');
-	    if (totalAmountElement) {
-	        totalAmountElement.textContent = formatNumber(total);
-	    }
-	}
-	
-	function formatNumber(number) {
-	    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	}
+       let total = 0;
+       const items = document.querySelectorAll('.item');
+   
+       items.forEach(item => {
+           const priceText = item.querySelector('.item-price').textContent.replace(/,/g, '');
+           const price = parseInt(priceText, 10) || 0;
+           const quantity = parseInt(item.querySelector('.quantity').textContent, 10) || 0;
+           total += price * quantity;
+       });
+   
+       // 합계 업데이트
+       const totalAmountElement = document.getElementById('totalAmount');
+       if (totalAmountElement) {
+           totalAmountElement.textContent = formatNumber(total);
+       }
+   }
+   
+   function formatNumber(number) {
+       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+   }
