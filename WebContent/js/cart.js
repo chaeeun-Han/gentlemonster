@@ -99,3 +99,49 @@
    function formatNumber(number) {
        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
    }
+   
+// 구매하기 버튼을 눌렀을 때 발생할 때
+function handlePurchase() {
+    	console.log("나는 버튼을 눌렀다!!");
+
+    const form = document.querySelector("form");
+    form.action = "/shop/purchase"; // 명시적으로 설정    
+    const items = document.querySelectorAll(".item");
+
+    // 모든 hidden input 초기화
+    form.querySelectorAll('input[type="hidden"]').forEach((input) => input.remove());
+
+    let hasCheckedItems = false;
+
+    // 각 아이템의 데이터를 hidden input으로 추가
+    items.forEach((item) => {
+        const checkbox = item.querySelector(".checkbox");
+        if (checkbox.checked) {
+            hasCheckedItems = true;
+
+            const productId = item.dataset.cartid;
+            const productName = item.querySelector(".item-name").textContent.trim();
+            const productCount = parseInt(item.querySelector(".quantity").textContent, 10);
+            const price = parseInt(item.querySelector(".item-price").textContent.replace(/,/g, ""), 10);
+            const imgUrl = item.querySelector(".item-image").src;
+
+            // hidden input 추가
+            form.innerHTML += `
+                <input type="hidden" name="productId" value="${productId}">
+                <input type="hidden" name="productName" value="${productName}">
+                <input type="hidden" name="productCount" value="${productCount}">
+                <input type="hidden" name="price" value="${price}">
+                <input type="hidden" name="imgUrl" value="${imgUrl}">
+            `;
+        }
+    });
+
+    // 체크된 아이템이 없을 경우 처리
+    if (!hasCheckedItems) {
+        alert("구매할 상품을 선택해주세요.");
+        return;
+    }
+
+    // 폼 제출
+    form.submit();
+}
