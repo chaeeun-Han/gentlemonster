@@ -13,7 +13,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.gentlemonster.web.dto.CartDTO;
 import com.gentlemonster.web.dto.CustomerDTO;
 import com.gentlemonster.web.dto.PurchaseHistoryDTO;
 import com.gentlemonster.web.dto.PurchaseInformationDTO;
@@ -21,6 +20,7 @@ import com.gentlemonster.web.dto.PurchaseListDTO;
 
 public class PurchaseDAO {
 	static DataSource dataSource;
+	private MemberDAO memberDAO = new MemberDAO();
 	
 	static {
 		try {
@@ -75,7 +75,7 @@ public class PurchaseDAO {
 		Connection con = null;
 		//상품명, 개수, 가격
 		//purchase.purchase_time, purchase.purchase_id, purchase_history.product_count, purchase_history.price, prd.price, i.image_url 
-		try {
+		try {			
 			con = dataSource.getConnection();
 			String sql = "select purchase_id, to_char(purchase_time, 'YYYY-MM-DD') as purchase_time "
 					+ "from purchase "

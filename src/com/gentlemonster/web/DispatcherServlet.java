@@ -50,6 +50,8 @@ public class DispatcherServlet extends HttpServlet {
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+	    
 		String methodOverride = request.getParameter("action");
 
 	    if (methodOverride != null) {
@@ -60,8 +62,6 @@ public class DispatcherServlet extends HttpServlet {
 	}
 	
 	private void processServlet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("utf-8");
-	    
 		String command = request.getRequestURI();
 		
 		if(command.indexOf(request.getContextPath()) == 0) {

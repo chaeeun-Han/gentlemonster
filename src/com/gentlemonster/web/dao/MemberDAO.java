@@ -111,15 +111,15 @@ public class MemberDAO {
 		return userid;
 	}
 	
-	public CustomerDTO getCustomer(String userId) {
+	public CustomerDTO getCustomer(Long customerId) {
 		Connection con = null;
 		CustomerDTO customer = new CustomerDTO();
 		
 		try {
 			con = dataSource.getConnection();
-			String sql = "select * from customer where user_id=?";
+			String sql = "select * from customer where customer_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);			
-			stmt.setString(1, userId);
+			stmt.setLong(1, customerId);
 
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {

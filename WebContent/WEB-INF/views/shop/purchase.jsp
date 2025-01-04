@@ -12,6 +12,10 @@
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
+
+<!-- custom css -->
+<link rel="stylesheet" type="text/css" href="/css/cart.css">
+
 <!-- Bootstrap JS, Popper.js -->
 <script
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -25,13 +29,13 @@ hr {
 
 .container {
 	display: flex;
-	width: 65%;
+	width: 30%;
 	margin: 50px auto;
 	gap: 80px;
 }
 
 .delivery-info {
-	flex: 2;
+	flex: 3;
 }
 
 .order-info {
@@ -77,7 +81,7 @@ hr {
 	height: 40px;
 }
 
-.purchase {
+.purchase-btn {
 	cursor: pointer;
 	background-color: black;
 	color: white;
@@ -92,10 +96,11 @@ hr {
 </style>
 </head>
 <body>
+    <jsp:include page="/header.jsp"></jsp:include>
 	<div class="container">
 		<div class="delivery-info">
 			<p class="title">배송 정보</p>
-			<form action="/shop/purchase" method="post">
+			<form action="/shop/purchase" method="POST" accept-charset="UTF-8">
 				<c:forEach var="product" items="${products}">
 				    <input type="hidden" name="productId" value="${product.productId}">
 				    <input type="hidden" name="productName" value="${product.productName}">
@@ -126,37 +131,66 @@ hr {
 				<hr>
 				<div class="buttons">
 					<button type="button" class="exit" onclick="window.location.href='/styles'">취소</button>
-					<button type="button" class="purchase" data-bs-toggle="modal" data-bs-target="#purchaseModal">결제하기</button>
+					<button type="button" class="purchase-btn" data-bs-toggle="modal" data-bs-target="#purchaseModal">결제하기</button>
 				</div>
+
+				<div class="modal fade" id="purchaseModal" tabindex="-1"
+					aria-labelledby="purchaseModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content rounded-4 shadow">
+							<div class="modal-body p-4 text-center">
+								<h5 class="mb-0">구매가 완료되었습니다. 감사합니다!</h5>
+							</div>
+							<div class="modal-footer p-0 justify-content-center">
+								<button type="submit"
+									class="selected-btn btn btn-lg btn-link fs-6 text-decoration-none m-0 rounded-0"
+									data-bs-dismiss="modal">
+									<strong>확인</strong>
+								</button>
+							</div>
+			
+						</div>
+					</div>
+				</div>
+
+
 			</form>
 		</div>
 
 		<div class="order-info">
-			<p class="title">주문 내용</p>
-			<!-- 주문 내역 가져다가 쓰기 -->
+		    <p class="title">주문 내용</p>
+		    <div class="item-list">
+   				<c:forEach var="product" items="${products}">
+		            <div class="item" data-cartid="1">
+		                <button class="item-detail">
+		                    <img class="item-image" alt="장바구니 상품 이미지 URL" src="${product.imgUrl}">
+		                </button>
+		                <div class="item-info">
+		                    <p class="item-name">${product.productName}</p>
+		                    <p class="item-price">${product.price}원</p>
+		                    <div class="item-quantity">
+		                        <span class="quantity">${product.productCount}</span>
+		                    </div>
+		                </div>
+		            </div>
+		        </c:forEach>
+		    </div>
+		    <div class="modal-bottom">
+		        <div class="count-info">
+		            <p>배송비</p>
+		            <p>무료</p>
+		        </div>
+		        <div class="count-info">
+		            <p>합계</p>
+		            <p><span id="totalAmount">0</span>원</p>
+		        </div>
+		    </div>
 		</div>
 	</div>
 
-	<div class="modal fade" id="purchaseModal" tabindex="-1"
-		aria-labelledby="purchaseModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content rounded-4 shadow">
-				<div class="modal-body p-4 text-center">
-					<h5 class="mb-0">구매가 완료되었습니다. 감사합니다!</h5>
-				</div>
-				<div class="modal-footer p-0 justify-content-center">
-					<button type="submit"
-						class="selected-btn btn btn-lg btn-link fs-6 text-decoration-none m-0 rounded-0"
-						data-bs-dismiss="modal" 
-						onclick="submitForm()">
-						<strong>확인</strong>
-					</button>
-				</div>
 
-			</div>
-		</div>
-	</div>
 </body>
+<script src="/js/cart.js" defer></script> 
 <script>
     function submitForm() {
         // form 요청 보내기
