@@ -13,7 +13,7 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <meta charset="UTF-8">
-<title>details</title>
+<title>${ product.productName }</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
@@ -24,38 +24,52 @@ body {
 
 .product-container {
 	display: flex;
-	flex-wrap : wrap;
-	max-width: 1200px;
+	/* flex-wrap: wrap; */
+	flex-direction: row;
+	max-width: 100%;
+	max-height: 100%;
 	margin: 10px auto;
 	background: #fff;
 	border: 1px solid #ddd;
 	padding: 40px;
-	border-radius: 8px;
 }
 
 .product-images {
-	display:flex;
+	display: flex;
 	flex-wrap: wrap;
 	max-width: 600px;
 	justify-content: space-between;
 }
 
 .product-images .main-image {
-	flex : 0 1 calc(50%- 5px);
+	flex: 0 1 50%;
 	box-sizing: border-box;
-	text-align: center;
 }
-.product-images .main-image img{
+
+.product-images .main-image img {
 	width: 100%;
 	margin: 20px;
 	max-width: 250px;
 	border-radius: 8px;
 }
-.product-images .sub-images img {
-	width: 80px;
-	margin: 5px;
+
+.product-images .sub-images {
+	/* flex: 1 0 calc(50% - 5px); */
+	flex: 1 0 50%;
+	box-sizing: border-box;
+}
+
+.product-images .sub-images a img {
+	width: 30%;
+	margin: 2px;
 	border-radius: 4px;
 	cursor: pointer;
+	border: 1px solid transparent;
+	transition: border 0.3s ease;
+}
+
+.product-images .sub-images a img:hover{
+	border: 2px solid black;
 }
 
 .product-details {
@@ -91,11 +105,12 @@ div#side_right {
 </style>
 <style type="button">
       div#btn {
-        width: 50px;
+        width: 70px;
       }
     </style>
 </head>
 <body>
+	<jsp:include page="/header.jsp"></jsp:include>
 	<div class="product-container">
 		<div class="product-images">
 			<!-- 이미지 리스트를 JSTL로 출력 -->
@@ -105,45 +120,81 @@ div#side_right {
 				</div>
 			</c:forEach>
 		</div>
-		
-		<div>
-	</div>
-	<div class="product-details">
+
+		<div></div>
+		<div class="product-details">
 			<div id="side_right">
-				<br><br><br>
-				<div style="width: 150px; float: left">${product.productName}</div>
-				<div style="float: right">${product.price}</div>
-				<br><br>
-				<div style="height: 150px">사진 넣는 구간</div><br>
-				<div style="height: 200px; text-align: center">${product.discription}</div><br><br>
+				<br> <br> <br>
+				<div
+					style="width: 150px; font-weight: bold; font-size: 22px; float: left">${product.productName}</div>
+				<div style="float: right">${product.price}원</div>
+				<br> <br>
+				<br>
+				<div class="product-images">
+					<div class="sub-images">
+						<!-- 이미지 리스트를 JSTL로 출력 -->
+						<c:forEach var="images" items="${mainImage}" varStatus="status">
+							<a href="/shop/item?id=${images.productId}"> <img
+								src="${images.imageUrl}" alt="Sub Image ${status.index }">
+							</a>
+						</c:forEach>
+					</div>
+				</div>
+				<br>
+				<div style="height: 200px; text-align: center; font-size:14px">${product.discription}</div>
+				<br> <br>
 				<div style="text-align: center">
 					<c:choose>
-					<c:when test="${product.productCount eq null }">
-						<button
-						style="width: 150px; height: 30px; font-size: 10px; background-color: black; border-radius: 20px; color: white;">
-						임시 품절 상품입니다.</button>
-					<br> <br>
-					</c:when>
-					<c:otherwise>
-					<button
-						style="width: 150px; height: 30px; font-size: 10px; background-color: black; border-radius: 20px; color: white;">
-						구매하기</button>
-					<br> <br>
-					<button
-						style="width: 150px; height: 30px; font-size: 10px; border-radius: 20px;">
-						장바구니 담기</button>
-					<br> <br>
-					</c:otherwise>
-					
+						<c:when test="${product.productCount eq 0 }">
+							<button
+								style="width: 150px; height: 30px; font-size: 10px; background-color: black; border-radius: 20px; color: white;">
+								임시 품절 상품입니다.</button>
+							<br>
+							<br>
+						</c:when>
+						<c:otherwise>
+	                        <form action="/shop/purchase">
+							    <input type="hidden" name="productId" value="${product.productId}">
+							    <input type="hidden" name="productName" value="${product.productName}">
+							    <input type="hidden" name="productCount" value="1">
+							    <input type="hidden" name="price" value="${product.price}">
+							    <input type="hidden" name="imgUrl" value="${product.mainImage}">
+		                        <button
+		                                style="width: 300px; height: 50px; font-size: 14px; background-color: black; border-radius: 30px; color: white;">
+							                            구매하기
+		                        </button>
+	                        </form>
+							<br>
+							<br>
+							<form action="/shop/purchase">
+								<button
+									style="width: 300px; height: 50px; font-size: 14px; border-radius: 30px;">
+									장바구니 담기</button>
+								<br> <br>
+							</form>
+						</c:otherwise>
+
 					</c:choose>
 				</div>
 				<hr style="color: gray">
-				<div style="text-align:left; color:gray">제품 세부 정보</div><br>
-				<div style="height: 150px; text-align: left">
-					${product.detail}
+				<div class="accordion accordion-flush" id="accordionFlushExample">
+					<div class="accordion-item">
+						<h2 class="accordion-header" id="flush-headingOne">
+							<button class="accordion-button collapsed" type="button"
+								focus="outline:none" data-bs-toggle="collapse"
+								data-bs-target="#flush-collapseOne" aria-expanded="false"
+								aria-controls="flush-collapseOne">제품 세부 정보</button>
+						</h2>
+						<div id="flush-collapseOne" class="accordion-collapse collapse"
+							aria-labelledby="flush-headingOne"
+							data-bs-parent="#accordionFlushExample">
+							<div class="accordion-body" style="font-size: 14px">
+								${product.detail}</div>
+						</div>
+					</div>
 				</div>
+
 			</div>
-		</div>
 </body>
 
 </html>

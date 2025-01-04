@@ -16,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.gentlemonster.web.dto.CustomerDTO;
 import com.gentlemonster.web.dto.MemberDTO;
 
 public class MemberDAO {
@@ -82,6 +83,39 @@ public class MemberDAO {
 			closeConnection(con);
 		}
 		return pw;
+	}
+	
+	// 고객  검색
+	public CustomerDTO getCustomer(String userId) {
+		Connection con = null;
+		CustomerDTO customer = new CustomerDTO();
+		
+		try {
+			con = dataSource.getConnection();
+			String sql = "select * from customer where user_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);			
+			stmt.setString(1, userId);
+
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				// customer 생성
+	            customer.setCustomerId(rs.getLong("customer_id"));
+	            customer.setUserId(rs.getString("user_id"));
+	            customer.setUserPw(rs.getString("user_pw"));
+	            customer.setBirthday(rs.getTimestamp("birthday"));
+	            customer.setEmail(rs.getString("email"));
+	            customer.setAddress(rs.getString("address"));
+            } else {
+				throw new SQLException("아이디가 없습니다.");
+			}
+		} catch(SQLException e) {
+			System.out.println(e.getMessage());
+			throw new RuntimeException(e);
+		} finally {
+			closeConnection(con);
+		}
+		
+		return customer;
 	}
 	
 	private void closeConnection(Connection con) {

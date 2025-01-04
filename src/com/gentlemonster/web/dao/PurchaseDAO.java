@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,13 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.gentlemonster.web.dto.CartDTO;
+import com.gentlemonster.web.dto.CustomerDTO;
 import com.gentlemonster.web.dto.PurchaseHistoryDTO;
+import com.gentlemonster.web.dto.PurchaseInformationDTO;
 import com.gentlemonster.web.dto.PurchaseListDTO;
 
-public class PurchaseListDAO {
+public class PurchaseDAO {
 	static DataSource dataSource;
 	
 	static {
@@ -25,6 +29,45 @@ public class PurchaseListDAO {
 		} catch(NamingException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+	
+	// 구매하기
+	public Long postPurchase(PurchaseInformationDTO purchase, long customerId) {
+		Connection con = null;
+		Long purchaseId = null;
+
+		// 구매하기
+		try {
+			con = dataSource.getConnection();
+			
+			String sql = "INSERT INTO PURCHASE(total_price, purchase_time, delivered, "
+					+ "phone_number, received_name, address, customer_id) "
+					+ "VALUES(?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement stmt = con.prepareStatement(sql, new String[] { "PURCHASE_ID" });
+			stmt.setLong(1, purchase.getTotalPrice());
+			stmt.setTimestamp(2, Timestamp.valueOf(purchase.getPurchaseTime()));
+			stmt.setBoolean(3, false);
+			stmt.setString(4, purchase.getPhoneNumber());
+			stmt.setString(5, purchase.getReceiver());
+			stmt.setString(6, purchase.getAddress());
+			stmt.setLong(7, customerId);
+			
+			int row = stmt.executeUpdate();
+	        if (row > 0) {
+	            // 자동 생성된 키 가져오기
+	            ResultSet rs = stmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                purchaseId = rs.getLong(1); // 첫 번째 열에서 ID 가져오기
+	            }
+	            rs.close();
+	        }
+		} catch(Exception e) {
+			throw new RuntimeException("purchase insert error : " + e.getMessage());
+		} finally {
+			closeConnection(con);
+		}
+		
+		return purchaseId;
 	}
 	
 	public List<PurchaseListDTO> getPurchaseList(Long customerId) {

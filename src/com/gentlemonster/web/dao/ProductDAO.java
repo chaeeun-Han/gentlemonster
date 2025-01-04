@@ -14,6 +14,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.gentlemonster.web.dto.ProductDTO;
+import com.gentlemonster.web.dto.StyleDTO;
 
 
 
@@ -27,6 +28,41 @@ public class ProductDAO {
 		} catch(NamingException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ProductDTO getItem(String productId) {
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		ProductDTO product = null;
+		Connection con = null;
+
+		try {
+			con = dataSource.getConnection();
+			String sql = "SELECT main_image AS imageUrl, product_name AS productName, price " +
+					"FROM product WHERE product_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setNString(1,  productId);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				product = new ProductDTO();
+				product.setImageUrl(rs.getString("imageUrl"));
+				product.setProductName(rs.getString("productName"));
+
+				// 가격 처리
+				int price = rs.getInt("price");
+				if (rs.wasNull()) {
+					product.setPrice("일시 품절");
+				} else {
+					product.setPrice(formatter.format(price) + "원");
+				}
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(con);
+		}
+		return product;
 	}
 
 	public List<ProductDTO> getItemList(String bigCategoryId, String smallCategoryId) {
@@ -47,16 +83,16 @@ public class ProductDAO {
 								"color_count AS colorCount, hit, main_image AS imageUrl, " +
 								"COUNT(*) OVER() AS totalCount " +
 								"FROM product " +
-						"WHERE big_category_id = ? " +
-						"GROUP BY product_name, price, color_count, hit, main_image " +
+								"WHERE big_category_id = ? " +
+								"GROUP BY product_name, price, color_count, hit, main_image " +
 						"ORDER BY MIN(product_id) ASC");
 				stmt.setString(1, bigCategoryId);
 
 				// 카테고리명 가져오기
 				String getCategoriesSql = 
 						"SELECT big_category_name AS big_category " +
-						"FROM big_category " +
-						"WHERE big_category_id = ?";
+								"FROM big_category " +
+								"WHERE big_category_id = ?";
 				PreparedStatement getCategories = conn.prepareStatement(getCategoriesSql);
 				getCategories.setString(1, bigCategoryId);
 				ResultSet categories = getCategories.executeQuery();
@@ -68,12 +104,12 @@ public class ProductDAO {
 
 			} else { // smallCategory와 bigCategory로 조회
 				stmt = conn.prepareStatement(
-					    "SELECT product_id AS productId, product_name AS productName, price, " +
-					    "color_count AS colorCount, hit, main_image AS imageUrl, " +
-					    "COUNT(*) OVER() AS totalCount " +
-					    "FROM product " +
-					    "WHERE small_category_id = ? AND big_category_id = ? " +
-					    "ORDER BY product_id ASC");
+						"SELECT product_id AS productId, product_name AS productName, price, " +
+								"color_count AS colorCount, hit, main_image AS imageUrl, " +
+								"COUNT(*) OVER() AS totalCount " +
+								"FROM product " +
+								"WHERE small_category_id = ? AND big_category_id = ? " +
+						"ORDER BY product_id ASC");
 				stmt.setString(1, smallCategoryId);
 				stmt.setString(2, bigCategoryId);
 
@@ -89,7 +125,7 @@ public class ProductDAO {
 				getCategories.setString(1, smallCategoryId);
 				getCategories.setString(2, bigCategoryId);
 				ResultSet categories = getCategories.executeQuery();
-				
+
 				if (categories.next()) {
 					bigCategoryName = categories.getString("big_category");
 					smallCategoryName = categories.getString("small_category");
@@ -120,11 +156,20 @@ public class ProductDAO {
 				product.setHit(rs.getInt("hit"));
 				products.add(product);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return products;
 	}
 
+	private void closeConnection(Connection con) {
+		if(con!=null) {
+			try {
+				con.close();
+			} catch(Exception e) {
+
+			}
+		}
+	}
 }
