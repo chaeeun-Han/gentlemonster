@@ -35,7 +35,7 @@ body {
 .product-images {
    display: flex;
    flex-wrap: wrap;
-   max-width: 600px;
+   max-width: 900px;
    justify-content: space-between;
 }
 .product-images .main-image {
@@ -45,7 +45,7 @@ body {
 .product-images .main-image img {
    width: 100%;
    margin: 20px;
-   max-width: 250px;
+   max-width: 400px;
    border-radius: 8px;
 }
 .product-images .sub-images {
