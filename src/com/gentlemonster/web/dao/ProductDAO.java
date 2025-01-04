@@ -162,6 +162,30 @@ public class ProductDAO {
 		}
 		return products;
 	}
+	
+	public ProductDTO updateHit(String productId) {
+		ProductDTO product = null;
+		Connection con = null;
+
+		try {
+			con = dataSource.getConnection();
+			String sql = "update product "
+						+ "set hit = product.hit +1 "
+						+ "where product_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1,  productId);
+
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+			}
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(con);
+		}
+		return product;
+	}
 
 	private void closeConnection(Connection con) {
 		if(con!=null) {

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import com.gentlemonster.web.RequestMapping;
 import com.gentlemonster.web.dao.ImageDAO;
+import com.gentlemonster.web.dao.ProductDAO;
 import com.gentlemonster.web.dto.ImageDTO;
 import com.gentlemonster.web.dto.ProductDTO;
 
@@ -31,6 +32,8 @@ public class ImageHandler implements CommandHandler {
         request.setAttribute("product", productDTO);
         List<ImageDTO> mainImage = new ArrayList<>(image.getSimilarProduct(id));
         request.setAttribute("mainImage", mainImage);
+        ProductDAO product = new ProductDAO();
+        request.setAttribute("hit", product.updateHit(id));
         HttpSession session = request.getSession();
         
         return "/shop/item.jsp";
